@@ -1,21 +1,27 @@
 const passport = require('passport');
 const User = require('./models/user')
+const dbStats = require('./models/dbStats')
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 require('dotenv').config()
 passport.use(new GoogleStrategy({
     clientID:     process.env.gclient_ID,
     clientSecret: process.env.gclient_SECRET,
-    callbackURL: "http://localhost:3000/google-callback",
+    callbackURL: `http://localhost:8079/google-callback`,
     passReqToCallback   : true
   },
   async function(request, accessToken, refreshToken, profile, done) {
     try{
     let ex_user=await User.findOne({gID: profile.id})
     if(ex_user) return done(null,ex_user);
+    const ucount= await dbStats.findOne({statID: 117});
+    let synID = "SYN-"+(ucount.syn_ct+100+1);
+    ucount.syn_ct+=1;
+    await ucount.save();
     const newUser = new User({
         gID: profile.id,
         username: profile.displayName,
         email: profile.emails[0].value,
+        syn_id: synID,
         events:[],
         usn: null,
         college: null
