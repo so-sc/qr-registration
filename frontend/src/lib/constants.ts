@@ -244,6 +244,7 @@ export const EVENTS = [
     clashes: [],
     type: "Talk",
     seats: 200,
+    event_id:"101"
   },
   {
     name: "The Multiverse of OS: A Deep Dive into Dual Boot, VMs, and Containers",
@@ -254,6 +255,7 @@ export const EVENTS = [
     clashes: [],
     type: "Talk",
     seats: 200,
+    event_id:"102"
   },
   {
     name: "DevOps Fundamentals: Building a Strong Foundation",
@@ -264,6 +266,7 @@ export const EVENTS = [
     clashes: [3],
     type: "Master Class",
     seats: 80,
+    event_id:"103"
   },
   {
     name: "Level Up Your Web3 Game using Smart Contracts",
@@ -274,6 +277,7 @@ export const EVENTS = [
     clashes: [2],
     type: "Master Class",
     seats: 80,
+    event_id:"104"
   },
   {
     name: "Something Interesting 👀",
@@ -285,6 +289,7 @@ export const EVENTS = [
     clashes: [],
     type: "Talk",
     seats: 200,
+    event_id:"105"
   },
   {
     name: "Unlock Your Earning Potential: From Engineering to Corporate",
@@ -295,6 +300,7 @@ export const EVENTS = [
     clashes: [],
     type: "Talk",
     seats: 200,
+    event_id:"106"
   },
   {
     name: "From Coastal Town to IT Hub: The Rise of Mangalore's IT Industry",
@@ -305,6 +311,7 @@ export const EVENTS = [
     clashes: [],
     type: "Panel Discussion",
     seats: 200,
+    event_id:"107"
   },
   {
     name: "Cracking the MAANG Code: What It Takes to Get Hired in Top IT Companies",
@@ -315,6 +322,7 @@ export const EVENTS = [
     clashes: [],
     type: "Panel Discussion",
     seats: 200,
+    event_id:"108"
   },
   {
     name: "10X Your API Productivity: Mastering APIs using Postman",
@@ -325,6 +333,7 @@ export const EVENTS = [
     clashes: [9],
     type: "Master Class",
     seats: 80,
+    event_id:"109"
   },
   {
     name: "GEN AI for Dummies: A Beginner's Guide to LLMS",
@@ -335,5 +344,6 @@ export const EVENTS = [
     clashes: [8],
     type: "Master Class",
     seats: 80,
+    event_id:"110"
   },
 ];

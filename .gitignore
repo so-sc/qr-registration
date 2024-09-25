@@ -1,2 +1,3 @@
 /devhost_api/.ENV
+/frontend/.ENV
 /devhost_api/node_modules

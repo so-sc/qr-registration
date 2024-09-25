@@ -25,7 +25,10 @@ const PORT = 8079;
 app.use(express.json());
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+}));
 const razorpayInstance = new Razorpay({
   key_id: process.env.razorID,
   key_secret: process.env.razorSecret
@@ -42,6 +45,7 @@ app.get('/', (req, res) => {
 app.get('/testend',(req,res)=>{
   res.json("Im Up");
 })
+priceMap={};
 app.get('/update-details',isLoggedIn ,(req, res) => {
   res.json("hello, "+req.user.username)
   console.log(req.isAuthenticated())
@@ -59,14 +63,22 @@ app.get('/logout', function(req, res, next) {
   });
 });
 app.post('/createOrder',isLoggedIn,(req, res)=>{ 
-  const {amount,currency,receipt, notes}  = req.body;
-  razorpayInstance.orders.create({amount, currency, receipt, notes}, 
+  const {amount,currency,receipt, notes,events
+  }  = req.body;
+  const rcur=findCur(events);
+  razorpayInstance.orders.create({amount:rcur, currency, receipt, notes}, 
     (err, order)=>{
       if(!err){
+        order.events=events
+        console.log(order)
         res.json(order);
       }
       else res.send(err);
     });
+});
+app.post('/details_update',isLoggedIn,(req, res)=>{ 
+    updet(req.user,req.body)
+    res.json({added:"ok"})
 });
 app.post('/verPayment',isLoggedIn,(req, res) => {
   // console.log(req);
@@ -77,6 +89,7 @@ app.post('/verPayment',isLoggedIn,(req, res) => {
   console.log(eSig+" "+signature)
   if (eSig === signature) {
     attachEvents(req.user,events);
+    res.status(200).json({ success: true, message: 'Payment verification successfull' });
   } else {
       res.status(400).json({ success: false, message: 'Payment verification failed' });
   }
@@ -99,4 +112,17 @@ const attachEvents= async(luser,events)=>{
   await user.save();
   console.log(user);
 
+}
+
+const findCur=(events)=>{
+  var cur=100;
+  for(var i=0;i<events.length;i++)if(priceMap[events[i]]!=undefined) cur+=priceMap[events[i]];
+  return ""+(cur*100);
+}
+
+const updet=async(luser,body)=>{
+  const user=await User.findOne({gID: luser.gID});
+  user.usn=body.usn
+  user.college=body.college
+  await user.save()
 }
