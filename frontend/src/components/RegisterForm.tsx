@@ -1,139 +1,66 @@
 "use client"
-
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { COLLEGES, EVENTS } from "@/lib/constants"
-import { createClient } from "@/utils/supabase/client"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { COLLEGES } from "@/lib/constants"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-
+import { useRouter } from "next/navigation"
 export default function RegisterForm() {
+  const router=useRouter();
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [phone, setPhone] = useState("")
   const [college, setCollege] = useState("")
   const [branch, setBranch] = useState("")
   const [year, setYear] = useState("")
+  const [usn, setUsn] = useState("")
   const [loading, setLoading] = useState(false)
-  const [selectedEvents, setSelectedEvents] = useState<number[]>([])
-  const [eventCounts, setEventCounts] = useState<number[]>(
-    new Array(EVENTS.length).fill(0)
-  )
-
-  const supabase = createClient()
-
-  useEffect(() => {
-    const fetchEventCounts = async () => {
-      const { data, error } = await supabase
-        .from("registrations")
-        .select("events")
-
-      if (error) {
-        console.error("Error fetching event counts:", error)
-        return
-      }
-
-      const counts = new Array(EVENTS.length).fill(0)
-      data.forEach((registration) => {
-        const events = JSON.parse(registration.events)
-
-
-
-        if (Array.isArray(events)) {
-          events.forEach((event: any) => {
-            counts[event] += 1
-          })
-        } else if (typeof events === 'object') {
-          Object.values(events).forEach((event: any) => {
-            counts[event] += 1
-          })
-        }
-      })
-
-      setEventCounts(counts)
-    }
-
-    fetchEventCounts()
-  }, [supabase])
-
   const handleSubmit = async (e: React.FormEvent) => {
+    const userDetails = {
+      name,
+      email,
+      phone,
+      college,
+      branch,
+      year,
+      usn,
+    }
     e.preventDefault()
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      toast.error("Invalid email format")
-      return
-    }
-
-    if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
-      toast.error("Phone number must be exactly 10 digits")
-      return
-    }
-
-    if (selectedEvents.length === 0) {
-      toast.error("Please select at least one event to RSVP")
-      return
-    }
-
-    for (const eventIndex of selectedEvents) {
-      if (eventCounts[eventIndex] >= EVENTS[eventIndex].seats) {
-        toast.error(
-          `Registration for "${EVENTS[eventIndex].name}" is full. Please select another event.`
-        )
-        return
+    try {
+      const response = await fetch("http://localhost:8079/details_update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },credentials:'include',
+        body: JSON.stringify(userDetails),
+      })
+      if (response.status!=200) {
+        throw new Error("Failed to update details")
       }
-    }
-
-    setLoading(true)
-
-    const { data, error } = await supabase.from("registrations").insert([
-      {
-        name: name,
-        email: email,
-        phone: phone,
-        college: college,
-        branch: branch,
-        year: year,
-        events: selectedEvents,
-      },
-    ])
-
-    if (error) {
-      setLoading(false)
-      console.error("Error inserting data:", error)
-      toast.error("Registration Failed", {
-        description: "Please try again later.",
+      toast.success("Details updated successfully!", {
+        description: "Welcome Aboard....",
       })
-    } else {
-      toast.success("Registration Successful!", {
-        description: "We're excited to see you at the event!",
-      })
-      setLoading(false)
       setName("")
       setEmail("")
       setPhone("")
       setCollege("")
       setBranch("")
       setYear("")
-      setSelectedEvents([])
-      const newEventCounts = [...eventCounts]
-      selectedEvents.forEach((eventIndex) => {
-        newEventCounts[eventIndex] += 1
+      setUsn("")
+      router.push("/events");
+    } catch (error) {
+      console.error("Error updating details:", error)
+      toast.error("Failed to update details", {
+        description: "Please try again later.",
       })
-      setEventCounts(newEventCounts)
+    } finally {
+      setLoading(false)
     }
-  }
-
+    }
   return (
     <div className="max-w-2xl mx-auto md:pt-5 pt-10">
       <div className="fixed top-0 left-0 border-white/10 bg-background z-50 w-full p-5 py-7 border-b">
@@ -201,6 +128,17 @@ export default function RegisterForm() {
               required
             />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="usn">USN</Label>
+            <Input
+              id="usn"
+              disabled={loading}
+              value={usn}
+              onChange={(e) => setUsn(e.target.value)}
+              placeholder="Enter your USN"
+              required
+            />
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="college">College</Label>
@@ -256,63 +194,9 @@ export default function RegisterForm() {
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-4 pt-8">
-            <h2 className="md:text-2xl text-xl font-bold text-primary">
-              Event RSVP
-            </h2>
-            <div className="space-y-5 mb-2">
-              {EVENTS.map((event, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="space-y-1 flex-1">
-                    <p className="font-medium">
-                      {event.name} -{" "}
-                      <span className="text-primary">{event.type}</span>
-                    </p>
-                    <div className="text-sm text-gray-400">
-                      <p>Speaker: {event.speaker}</p>
-                      <p>Date: {event.date}</p>
-                      <p>Time: {event.time}</p>
-                      {event.seats - eventCounts[index] < 20 &&
-                        event.seats - eventCounts[index] !== 0 ? (
-                        <p className="text-red-400">
-                          Hurry Up! Only {event.seats - eventCounts[index]}{" "}
-                          Seats Available
-                        </p>
-                      ) : (
-                        <p>
-                          {event.seats - eventCounts[index] === 0 ? (
-                            <span className="text-red-400">Seats Full :(</span>
-                          ) : (
-                            <span>
-                              Available Seats:{" "}
-                              {event.seats - eventCounts[index]}
-                            </span>
-                          )}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <Input
-                    type="checkbox"
-                    checked={selectedEvents.includes(index)}
-                    disabled={loading || eventCounts[index] >= event.seats}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedEvents([...selectedEvents, index])
-                      } else {
-                        setSelectedEvents(
-                          selectedEvents.filter((i) => i !== index)
-                        )
-                      }
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
           <Button
             type="submit"
-            disabled={loading || selectedEvents.length === 0}
+            disabled={loading}
             className="w-full"
           >
             {loading ? "Registering..." : "Register Now"}
