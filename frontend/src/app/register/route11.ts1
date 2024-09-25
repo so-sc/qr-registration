@@ -1,0 +1,9 @@
+import { NextResponse } from 'next/server';
+
+export async function POST(req: Request) {
+  const body = await req.json(); // Parse the incoming JSON body
+  console.log(body); // Check the incoming request body
+
+  // Handle the request (e.g., save to database, etc.)
+  return NextResponse.json({ message: 'Data received', data: body });
+}

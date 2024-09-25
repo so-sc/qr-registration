@@ -16,7 +16,7 @@
             e.preventDefault();
 
             // Call backend to create Razorpay order
-            fetch('http://localhost:3000/createOrder', { // Adjust the endpoint URL if needed
+            fetch('http://localhost:8079/createOrder', { // Adjust the endpoint URL if needed
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@
                         alert("Signature: " + response.razorpay_signature);
 
                         // Verify the payment by sending it to the backend
-                        fetch('http://localhost:3000/verPayment', { // Adjust the endpoint URL if needed
+                        fetch('http://localhost:8079/verPayment', { // Adjust the endpoint URL if needed
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
