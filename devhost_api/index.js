@@ -10,7 +10,17 @@ require('./dbInit')
 var cors = require('cors')
 const app = express();
 app.use(express.static('public'))
-app.use(session({secret: process.env.sessionSec}))
+app.use(session({
+  secret: process.env.sessionSec,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: false,
+    httpOnly: true,
+    sameSite: 'lax'
+  }
+}));
+
 const PORT = 8079;
 app.use(express.json());
 app.use(passport.initialize())
@@ -34,9 +44,10 @@ app.get('/testend',(req,res)=>{
 })
 app.get('/update-details',isLoggedIn ,(req, res) => {
   res.json("hello, "+req.user.username)
+  console.log(req.isAuthenticated())
 });
 app.get('/google-callback',passport.authenticate('google', {
-  successRedirect: `/update-details`,
+  successRedirect: `http://localhost:3000/register`,
   failureRedirect: '/auth/failed'
 }));
 app.get('/auth/google',passport.authenticate('google',{scope: ['email','profile']}));
@@ -72,6 +83,14 @@ app.post('/verPayment',isLoggedIn,(req, res) => {
 });
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+app.get('/check-auth', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.status(200).json({ authenticated: true, user: req.user });
+  } else {
+    res.status(401).json({ authenticated: false });
+  }
 });
 
 const attachEvents= async(luser,events)=>{

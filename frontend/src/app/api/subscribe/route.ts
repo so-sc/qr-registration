@@ -18,6 +18,7 @@ async function connectToDatabase(): Promise<{ client: MongoClient; collection: C
 }
 
 export async function POST(req: Request) {
+  console.log(req);
   const { email } = await req.json();
 
   if (!email) {
