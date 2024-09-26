@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL('http://localhost:8079/auth/google/', req.url));
   }
 else{
-  if(userData.user.usn&&req.nextUrl.pathname === '/register') return NextResponse.redirect(new URL('/events', req.url));
+  if(userData.user.college&&req.nextUrl.pathname === '/register') return NextResponse.redirect(new URL('/events', req.url));
 }
   return NextResponse.next();
 }
