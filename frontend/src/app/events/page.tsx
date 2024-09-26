@@ -49,7 +49,7 @@ export default function EventSelection() {
             key: "rzp_test_bhvlhaqYBs58iu",
             amount: orderData.amount,
             currency: orderData.currency,
-            name: "Event Registration",
+            name: "DevHost 2024 Event Registration",
             description: "Fee for selected events",
             order_id: orderData.id,
             handler: function (response: any) {
@@ -62,7 +62,7 @@ export default function EventSelection() {
               contact: "9999999999",
             },
             theme: {
-              color: "#3399cc",
+              color: "#4caf50",
             },
           };
   

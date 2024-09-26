@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 app.get('/testend',(req,res)=>{
   res.json("Im Up");
 })
-priceMap={};
+priceMap={"101":149,"102":129,"103":159,"104":179,"105":149,"106":139,"107":159,"108":129,"109":159,"110":169};
 app.get('/update-details',isLoggedIn ,(req, res) => {
   res.json("hello, "+req.user.username)
   console.log(req.isAuthenticated())
@@ -124,14 +124,14 @@ app.get('/profile', async(req, res) => {
 
 const attachEvents= async(luser,events)=>{
   const user=await User.findOne({gID: luser.gID});
-  user.events = events
+  user.events=events.concat(user.events);
   await user.save();
   console.log(user);
 
 }
 
 const findCur=(events)=>{
-  var cur=100;
+  var cur=5;
   for(var i=0;i<events.length;i++)if(priceMap[events[i]]!=undefined) cur+=priceMap[events[i]];
   return ""+(cur*100);
 }
