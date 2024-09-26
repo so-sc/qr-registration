@@ -19,7 +19,32 @@ export default function RegisterForm() {
   const [year, setYear] = useState("")
   const [usn, setUsn] = useState("")
   const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await fetch("http://localhost:8079/check-auth", {
+          credentials: "include",
+        });
+        if (res.status === 200) {
+          const data = await res.json();
+          console.log(data.user);
+          const user = data.user;
+          setName(user.username);
+          setEmail(user.email);
+        } else {
+          console.log("failed");
+          router.push("/register");
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        router.push("/register");
+      }
+    };
+    
+    getUserData();
+  }, [router]);
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const userDetails = {
       name,
       email,
@@ -29,7 +54,6 @@ export default function RegisterForm() {
       year,
       usn,
     }
-    e.preventDefault()
     try {
       const response = await fetch("http://localhost:8079/details_update", {
         method: "POST",
