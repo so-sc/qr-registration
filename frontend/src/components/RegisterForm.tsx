@@ -128,17 +128,6 @@ export default function RegisterForm() {
               required
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="usn">USN</Label>
-            <Input
-              id="usn"
-              disabled={loading}
-              value={usn}
-              onChange={(e) => setUsn(e.target.value)}
-              placeholder="Enter your USN"
-              required
-            />
-          </div>
 
           <div className="space-y-2">
             <Label htmlFor="college">College</Label>
