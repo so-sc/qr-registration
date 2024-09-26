@@ -106,6 +106,22 @@ app.get('/check-auth', (req, res) => {
   }
 });
 
+app.get('/profile', async(req, res) => {
+  const gid= req.query.gid;
+  console.log(gid)
+  if(!gid) return res.status(404);
+  const user = await User.findOne({gID: gid+""})
+  if(!user) {return res.status(404).json({message: "Unknown"});}
+  console.log(user)
+  const resbody = {
+    uname: user.username,
+    ucollege: user.college,
+    uusn: user.usn,
+  }
+  console.log(resbody)
+  return res.json(resbody);
+});
+
 const attachEvents= async(luser,events)=>{
   const user=await User.findOne({gID: luser.gID});
   user.events = events
