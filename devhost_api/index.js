@@ -138,7 +138,8 @@ const findCur=(events)=>{
 
 const updet=async(luser,body)=>{
   const user=await User.findOne({gID: luser.gID});
-  user.usn=body.usn
+  user.email=body.email
   user.college=body.college
+  user.phone=body.phone
   await user.save()
 }
