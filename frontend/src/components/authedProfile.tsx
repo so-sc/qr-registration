@@ -1,70 +1,58 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Edit2, Mail, Phone, School, Calendar, LucideIcon, Github, Linkedin, Instagram, FileText } from "lucide-react";
 import dynamic from 'next/dynamic';
-
 const CursorTrailCanvas = dynamic(() => import('@/components/CursorTrailCanvas'), { ssr: false });
-
 interface ProfileData {
-    name: string;
+    username: string;
     college: string;
     phone: string;
     email: string;
     year: string;
     branch: string;
-    insta:string;
-    portf:string;
-    ldn:string;
-    git:string;
-}
-
+  }
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
-
-    const getUserData = async () => {
-        try {
-            const urlParams = new URLSearchParams(window.location.search);
-            const gid = urlParams.get('gid');
-            const res = await fetch(`http://localhost:8079/viewprofile?gid=${gid}`);
-            const resData: ProfileData = await res.json();
-            setProfileData(resData);
-            if (res.status === 200) {
-                console.log("fetched");
-            } else {
-                console.log("Fetch Failed");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
     useEffect(() => {
+        const getUserData = async () => {
+          try {
+            const res = await fetch("http://localhost:8079/check-auth", {
+              credentials: "include",
+            });
+            if (res.status === 200) {
+            const data=await res.json();
+            const resData:ProfileData=data.user;
+            setProfileData(resData);
+                
+            } else {
+              console.log("failed");
+            }
+          } catch (error) {
+            console.error("Failed to fetch user details:", error);
+          }
+        };
+        
         getUserData();
-    }, []);
-
-    if (!profileData) {
-        return (<></>);
+      }, []);
+    if(!profileData){
+        return (<></>)
     }
-
     const profile = {
-        name: profileData.name,
+        name: profileData.username,
         image: "/events/profile.jpg",
         email: profileData.email,
         phone: profileData.phone,
         college: profileData.college,
         branch: profileData.branch,
         year: profileData.year,
-        ldn:profileData.ldn,
-        git:profileData.git,
-        insta:profileData.insta,
-        portf:profileData.portf,
-        eventsRegistered: ["Hackathon 2024", "AI Workshop", "Web Dev Bootcamp", "UI Battle"],
+        eventsRegistered: ["Hackathon 2024", "AI Workshop", "Web Dev Bootcamp","ui battle"],
         talksRegistered: ["Future of AI", "Blockchain Revolution", "UX Design Trends"],
-        teamMembers: ["Alice Smith", "Bob Johnson", "Charlie Brown"]
+        interests: ["DSA", "Java Programming", "Machine Learning"]
     };
 
     return (
@@ -76,7 +64,14 @@ export default function ProfilePage() {
                         <ArrowLeft className="h-5 w-5" />
                         <span>Back to Home</span>
                     </Link>
+                    <Link href="/edit" className="flex items-center space-x-2 text-[#b4ff39]">
+                    <Button variant="outline" className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E]">
+                        <Edit2 className="h-4 w-4" />
+                        <span>Edit Profile</span>
+                    </Button>
+                    </Link>
                 </div>
+                
             </header>
 
             <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -109,9 +104,10 @@ export default function ProfilePage() {
                             </dl>
                         </div>
 
-                        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+                        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             <ProfileList title="Events Registered" items={profile.eventsRegistered} />
                             <ProfileList title="Talks Registered" items={profile.talksRegistered} />
+                            <ProfileList title="Interests" items={profile.interests} />
                         </div>
                         <div className="mt-8 flex flex-col items-center">
                             <h2 className="text-lg font-semibold text-[#b4ff39] mb-4">Connect with Me</h2>

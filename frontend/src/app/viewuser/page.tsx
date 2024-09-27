@@ -1,4 +1,4 @@
-import ProfileComponent from "@/components/authedProfile";
+import ProfileComponent from "@/components/profile";
 
 export default function Profile() {
   return <ProfileComponent />;

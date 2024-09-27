@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
+import Link from "next/link";
+import { ArrowLeft, User, Mail, Phone, School, Calendar, LucideIcon } from "lucide-react";
 import Script from 'next/script';
 export default function EventSelection() {
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
@@ -107,6 +109,21 @@ export default function EventSelection() {
   
   return (<>
        <Script id="razorpay-checkout-js"src="https://checkout.razorpay.com/v1/checkout.js"/>
+       <header className="bg-[#2A2A2A] shadow">
+                <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                    <Link href="/" className="flex items-center space-x-2 text-[#b4ff39]">
+                        <ArrowLeft className="h-5 w-5" />
+                        <span>Back to Home</span>
+                    </Link>
+                    <Link href="/profile" className="flex items-center space-x-2 text-[#b4ff39]">
+                    <Button variant="outline" className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E]">
+                        <User className="h-5 w-5" />
+                        <span>Profile</span>
+                    </Button>
+                    </Link>
+                </div>
+                
+            </header>
     <div className="max-w-2xl mx-auto pt-10">
       <h1 className="text-2xl font-bold mb-6 text-center">Select Events</h1>
       <div className="space-y-4">

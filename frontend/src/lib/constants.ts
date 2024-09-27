@@ -280,7 +280,7 @@ export const EVENTS = [
     event_id:"104"
   },
   {
-    name: "Something Interesting 👀",
+    name: "Mystery Item 007",
     speaker: "To be revealed soon",
     description:
       "Strategies and techniques for effective damage control in various situations.",
