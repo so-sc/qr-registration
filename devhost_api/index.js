@@ -78,7 +78,13 @@ app.post('/createOrder',isLoggedIn,(req, res)=>{
 });
 app.post('/details_update',isLoggedIn,(req, res)=>{ 
     updet(req.user,req.body)
+    console.log(req.body);
     res.json({added:"ok"})
+});
+app.post('/socials_upd',isLoggedIn,(req, res)=>{ 
+  updet2(req.user,req.body)
+  console.log(req.body);
+  res.json({added:"ok"})
 });
 app.post('/verPayment',isLoggedIn,(req, res) => {
   // console.log(req);
@@ -106,7 +112,7 @@ app.get('/check-auth', (req, res) => {
   }
 });
 
-app.get('/profile', async(req, res) => {
+app.get('/viewprofile', async(req, res) => {
   const gid= req.query.gid;
   console.log(gid)
   if(!gid) return res.status(404);
@@ -114,9 +120,16 @@ app.get('/profile', async(req, res) => {
   if(!user) {return res.status(404).json({message: "Unknown"});}
   console.log(user)
   const resbody = {
-    uname: user.username,
-    ucollege: user.college,
-    uusn: user.usn,
+    name: user.username,
+    college: user.college,
+    phone: user.phone,
+    email: user.email,
+    year: user.year,
+    branch:user.branch,
+    ldn: user.ldn,
+    portf: user.portf,
+    git: user.git,
+    insta: user.insta,
   }
   console.log(resbody)
   return res.json(resbody);
@@ -138,8 +151,20 @@ const findCur=(events)=>{
 
 const updet=async(luser,body)=>{
   const user=await User.findOne({gID: luser.gID});
+  user.name=body.name
   user.email=body.email
   user.college=body.college
   user.phone=body.phone
+  user.year=body.year
+  user.branch=body.branch
+  await user.save()
+}
+
+const updet2=async(luser,body)=>{
+  const user=await User.findOne({gID: luser.gID});
+  if(body.git)user.git=body.git
+  if(body.link)user.ldn=body.link
+  if(body.insta)user.insta=body.insta
+  if(body.red)user.portf=body.red
   await user.save()
 }
