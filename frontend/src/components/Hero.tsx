@@ -8,7 +8,20 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
+    <div className="flex flex-col justify-center items-center min-h-screen relative">
+      {/* Profile Image */}
+      <div className="absolute top-4 right-2 z-50"> 
+        <Link href="/profile"> 
+          <Image
+            src="/events/profile.jpg"
+            alt="Profile"
+            width={50}
+            height={50}
+            className="rounded-full border-2 border-neon-green cursor-pointer"
+          />
+        </Link>
+      </div>
+
       <motion.div
         initial={{ y: -10, opacity: 0, filter: "blur(5px)" }}
         animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
@@ -46,7 +59,7 @@ export default function Hero() {
                   height={500}
                 />
               </div>
-              <p className="pt-2 tracking-wide">Presents</p>
+              <p className="pt-2 tracking-wide text-neon-green">Presents</p>
             </div>
 
             {/* Main Logo Section */}
@@ -59,7 +72,7 @@ export default function Hero() {
                 width={500}
                 height={500}
               />
-              <p className="md:text-sm text-xs pt-3 tracking-wide text-primary">
+              <p className="md:text-sm text-xs pt-3 tracking-wide text-neon-green">
                 Expertise Redefined, Experience Reimagined.
               </p>
             </div>
@@ -100,8 +113,8 @@ export default function Hero() {
                   as="button"
                   className="bg-background md:w-60 w-80 px-10 group flex items-center justify-center space-x-2"
                 >
-                  <span>Register Now</span>
-                  <span className="group-hover:text-primary">
+                  <span className="text-neon-green">Register Now</span>
+                  <span className="group-hover:text-neon-green">
                     <ArrowRightIcon />
                   </span>
                 </HoverBorderGradient>
@@ -122,7 +135,7 @@ export default function Hero() {
         }}
       >
         <svg
-          className="w-8"
+          className="w-8 text-neon-green"
           xmlns="http://www.w3.org/2000/svg"
           width="40"
           height="40"
@@ -137,4 +150,3 @@ export default function Hero() {
     </div>
   );
 }
-
