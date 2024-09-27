@@ -15,6 +15,10 @@ interface ProfileData {
     email: string;
     year: string;
     branch: string;
+    insta:string;
+    portf:string;
+    ldn:string;
+    git:string;
   }
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
@@ -50,6 +54,10 @@ export default function ProfilePage() {
         college: profileData.college,
         branch: profileData.branch,
         year: profileData.year,
+        ldn:profileData.ldn,
+        git:profileData.git,
+        insta:profileData.insta,
+        portf:profileData.portf,
         eventsRegistered: ["Hackathon 2024", "AI Workshop", "Web Dev Bootcamp","ui battle"],
         talksRegistered: ["Future of AI", "Blockchain Revolution", "UX Design Trends"],
         interests: ["DSA", "Java Programming", "Machine Learning"]
