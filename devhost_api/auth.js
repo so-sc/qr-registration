@@ -6,7 +6,7 @@ require('dotenv').config()
 passport.use(new GoogleStrategy({
     clientID:     process.env.gclient_ID,
     clientSecret: process.env.gclient_SECRET,
-    callbackURL: `https://devhost-qr-reg.onrender.com/google-callback`,
+    callbackURL: `https://devhostapi-1066257790986.us-central1.run.app/google-callback`,
     passReqToCallback   : true
   },
   async function(request, accessToken, refreshToken, profile, done) {

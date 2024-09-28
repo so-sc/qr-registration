@@ -6,7 +6,7 @@ const Razorpay = require('razorpay');
 const User = require('./models/user')
 require('dotenv').config()
 require('./auth')
-require('./dbInit')
+// require('./dbInit')
 var cors = require('cors')
 const app = express();
 app.use(express.static('public'))
@@ -15,18 +15,18 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: false,
+    secure: true,
     httpOnly: true,
-    sameSite: 'lax'
+    sameSite: 'None'
   }
 }));
 
-const PORT = 8079;
+const PORT = 8080;
 app.use(express.json());
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://devhost.sosc.org.in',
   credentials: true,
 }));
 const razorpayInstance = new Razorpay({
@@ -51,7 +51,7 @@ app.get('/update-details',isLoggedIn ,(req, res) => {
   console.log(req.isAuthenticated())
 });
 app.get('/google-callback',passport.authenticate('google', {
-  successRedirect: `https://qr-registration-bn45gsld1-techshettys-projects.vercel.app/register`,
+  successRedirect: `https://devhost.sosc.org.in/register`,
   failureRedirect: '/auth/failed'
 }));
 app.get('/auth/google',passport.authenticate('google',{scope: ['email','profile']}));
