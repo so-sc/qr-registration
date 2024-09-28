@@ -51,7 +51,7 @@ app.get('/update-details',isLoggedIn ,(req, res) => {
   console.log(req.isAuthenticated())
 });
 app.get('/google-callback',passport.authenticate('google', {
-  successRedirect: `http://localhost:3000/register`,
+  successRedirect: `https://qr-registration-bn45gsld1-techshettys-projects.vercel.app/register`,
   failureRedirect: '/auth/failed'
 }));
 app.get('/auth/google',passport.authenticate('google',{scope: ['email','profile']}));
