@@ -25,7 +25,7 @@ export default function ProfilePage() {
     useEffect(() => {
         const getUserData = async () => {
           try {
-            const res = await fetch("http://localhost:8079/check-auth", {
+            const res = await fetch("https://devhostapi-1066257790986.us-central1.run.app/check-auth", {
               credentials: "include",
             });
             if (res.status === 200) {

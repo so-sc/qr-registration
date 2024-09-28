@@ -36,7 +36,7 @@ export default function ProfilePage() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const gid = urlParams.get('gid');
-            const res = await fetch(`http://localhost:8079/viewprofile?gid=${gid}`);
+            const res = await fetch(`https://devhostapi-1066257790986.us-central1.run.app/viewprofile?gid=${gid}`);
             const resData: ProfileData = await res.json();
             setProfileData(resData);
             if (res.status === 200) {

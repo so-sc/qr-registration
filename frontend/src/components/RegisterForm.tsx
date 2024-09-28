@@ -22,7 +22,7 @@ export default function RegisterForm() {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch("http://localhost:8079/check-auth", {
+        const res = await fetch("https://devhostapi-1066257790986.us-central1.run.app/check-auth", {
           credentials: "include",
         });
         if (res.status === 200) {
@@ -55,7 +55,7 @@ export default function RegisterForm() {
       usn,
     }
     try {
-      const response = await fetch("http://localhost:8079/details_update", {
+      const response = await fetch("https://devhostapi-1066257790986.us-central1.run.app/details_update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

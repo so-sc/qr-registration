@@ -29,7 +29,7 @@ export default function EventSelection() {
     setLoading(true);
   
     try {
-      const response = await fetch("http://localhost:8079/createOrder", {
+      const response = await fetch("https://devhostapi-1066257790986.us-central1.run.app/createOrder", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export default function EventSelection() {
   };
   const verifyPayment = async (response: any, events: string[]) => {
     try {
-      const verificationResponse = await fetch("http://localhost:8079/verPayment", {
+      const verificationResponse = await fetch("https://devhostapi-1066257790986.us-central1.run.app/verPayment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
