@@ -18,7 +18,7 @@ export default function RegisterForm() {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch("https://devhostapi-1066257790986.us-central1.run.app/check-auth", {
+        const res = await fetch("https://devhostapi.sosc.org.in/check-auth", {
           credentials: "include",
         });
         if (res.status === 200) {
@@ -47,7 +47,7 @@ export default function RegisterForm() {
       interests,
     }
     try {
-      const response = await fetch("https://devhostapi-1066257790986.us-central1.run.app/socials_upd", {
+      const response = await fetch("https://devhostapi.sosc.org.in/socials_upd", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
