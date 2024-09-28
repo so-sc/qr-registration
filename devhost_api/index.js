@@ -120,11 +120,13 @@ app.get('/viewprofile', async(req, res) => {
   if(!user) {return res.status(404).json({message: "Unknown"});}
   console.log(user)
   const resbody = {
+    message: "gotcha",
     name: user.username,
     college: user.college,
     phone: user.phone,
     email: user.email,
     year: user.year,
+    events:user.events,
     branch:user.branch,
     ldn: user.ldn,
     portf: user.portf,

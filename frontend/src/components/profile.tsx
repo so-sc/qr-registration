@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Edit2, Mail, Phone, School, Calendar, LucideIcon, Github, Linkedin, Instagram, FileText } from "lucide-react";
 import dynamic from 'next/dynamic';
+import { list } from "postcss";
 
 const CursorTrailCanvas = dynamic(() => import('@/components/CursorTrailCanvas'), { ssr: false });
 
@@ -20,10 +21,16 @@ interface ProfileData {
     portf:string;
     ldn:string;
     git:string;
+    message:string;
+    events:[string];
 }
-
+const evname:string[]=["Event 1","Event 2","Event 3","Event 4","Event 5","Event 6","Event 7","Event 8","Event 9","Event 10","Event 11"]
+const evid:string[]=["101","102","103","104","105","106","107","108","109","110","111"]
+let evMap:{[key:string]:string}={}
+for(var i=0;i<evname.length;i++) evMap[evid[i]]=evname[i];
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
+    const [loading, setLoading] = useState(true);
 
     const getUserData = async () => {
         try {
@@ -33,7 +40,8 @@ export default function ProfilePage() {
             const resData: ProfileData = await res.json();
             setProfileData(resData);
             if (res.status === 200) {
-                console.log("fetched");
+                console.log("fetched",resData);
+                setLoading(false);
             } else {
                 console.log("Fetch Failed");
             }
@@ -45,9 +53,11 @@ export default function ProfilePage() {
     useEffect(() => {
         getUserData();
     }, []);
-
-    if (!profileData) {
+    console.log(profileData,!profileData)
+    if (!profileData||profileData.message=='unknown') {
+        console.log("hey");
         return (<></>);
+    
     }
 
     const profile = {
@@ -62,11 +72,12 @@ export default function ProfilePage() {
         git:profileData.git,
         insta:profileData.insta,
         portf:profileData.portf,
-        eventsRegistered: ["Hackathon 2024", "AI Workshop", "Web Dev Bootcamp", "UI Battle"],
-        talksRegistered: ["Future of AI", "Blockchain Revolution", "UX Design Trends"],
+        eventsRegistered: profileData.events,
+        interests: ["DSA", "Java Programming", "Machine Learning"],
+        talksRegistered: profileData.events,
         teamMembers: ["Alice Smith", "Bob Johnson", "Charlie Brown"]
     };
-
+    if(!loading){
     return (
         <div className="min-h-screen bg-[#1E1E1E] text-white">
             <CursorTrailCanvas className="pointer-events-none z-50 md:flex hidden fixed inset-0 h-full w-full" />
@@ -109,9 +120,10 @@ export default function ProfilePage() {
                             </dl>
                         </div>
 
-                        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+                        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             <ProfileList title="Events Registered" items={profile.eventsRegistered} />
                             <ProfileList title="Talks Registered" items={profile.talksRegistered} />
+                            <ProfileList title="Interests" items={profile.interests} />
                         </div>
                         <div className="mt-8 flex flex-col items-center">
                             <h2 className="text-lg font-semibold text-[#b4ff39] mb-4">Connect with Me</h2>
@@ -162,16 +174,24 @@ function ProfileItem({ icon: Icon, title, value }: { icon: LucideIcon; title: st
 }
 
 function ProfileList({ title, items }: { title: string; items: string[] }) {
+    try{
     return (
         <div className="bg-[#2A2A2A] border border-gray-600 rounded-lg overflow-hidden">
             <h3 className="text-lg font-semibold px-4 py-3 bg-[#b4ff39] text-[#1E1E1E]">{title}</h3>
             <ul className="divide-y divide-gray-600">
-                {items.map((item, index) => (
+                {
+                items.map((item, index) => (
                     <li key={index} className="px-4 py-3 text-sm hover:bg-[#3A3A3A] transition-colors">
-                        {item}
+                        {evMap[item]}
+                        {/* {item} */}
                     </li>
                 ))}
             </ul>
         </div>
     );
+}
+    catch (error){
+        console.log("NO PROF");
+    }
+}
 }
