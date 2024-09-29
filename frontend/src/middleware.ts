@@ -3,9 +3,7 @@ import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 export async function middleware(req: NextRequest) {
   const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
-    headers: {
-      cookie: req.headers.get('cookie') || '',
-    },
+    credentials: "include",
   });
   const userData= await res.json();
   if (res.status === 401) {
@@ -17,6 +15,5 @@ else{
   return NextResponse.next();
 }
 export const config = {
-  matcher: [],
-  //'/events','/profile','/edit','/register'
+  matcher: ['/events','/profile','/edit','/register'],
 };
