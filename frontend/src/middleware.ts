@@ -22,7 +22,8 @@ export async function middleware(req: NextRequest) {
   // Handle authentication status
   if (res.status === 401) {
     // Redirect to Google authentication if not authenticated
-    return NextResponse.redirect(new URL('https://devhostapi.sosc.org.in/auth/google/', req.url));
+    // return NextResponse.redirect(new URL('https://devhostapi.sosc.org.in/auth/google/', req.url));
+    console.log("Auth Failed..redir to login")
   } else {
     // If authenticated and trying to access /register but the user has college data, redirect to /events
     if (userData.user?.college && req.nextUrl.pathname === '/register') {
