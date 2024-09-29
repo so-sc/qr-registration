@@ -8,10 +8,10 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen relative">
+    <div className="flex flex-col justify-center items-center min-h-screen relative px-4 md:px-0">
       {/* Profile Image */}
-      <div className="absolute top-4 right-2 z-50"> 
-        <Link href="/profile"> 
+      <div className="absolute top-4 right-2 z-50">
+        <Link href="/profile">
           <Image
             src="/events/profile.jpg"
             alt="Profile"
@@ -59,11 +59,11 @@ export default function Hero() {
                   height={500}
                 />
               </div>
-              <p className="pt-2 tracking-wide text-neon-green">Presents</p>
+              <p className="pt-2 tracking-wide text-neon-green text-center">Presents</p>
             </div>
 
             {/* Main Logo Section */}
-            <div className="flex w-fit flex-col">
+            <div className="flex w-fit flex-col items-center">
               <Image
                 priority
                 src="/logo.svg"
@@ -72,7 +72,7 @@ export default function Hero() {
                 width={500}
                 height={500}
               />
-              <p className="md:text-sm text-xs pt-3 tracking-wide text-neon-green">
+              <p className="md:text-sm text-xs pt-3 tracking-wide text-neon-green text-center">
                 Expertise Redefined, Experience Reimagined.
               </p>
             </div>
@@ -106,19 +106,30 @@ export default function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
           >
-            <div className="flex md:flex-row flex-col gap-5 pb-20 md:pb-10 w-full">
-              <Link href="/register" className="md:px-0 px-5 flex mx-auto">
+            {/* Main Button and Subtext Section */}
+            <div className="flex flex-col items-center gap-2 pb-20 md:pb-10 w-full">
+              <Link href="/register" className="flex justify-center w-full">
                 <HoverBorderGradient
                   containerClassName="rounded-full"
                   as="button"
                   className="bg-background md:w-60 w-80 px-10 group flex items-center justify-center space-x-2"
                 >
+                  <Image
+                    src="/events/google_logo.png"
+                    alt="Google Logo"
+                    width={25}
+                    height={25}
+                  />
                   <span className="text-neon-green">Register Now</span>
                   <span className="group-hover:text-neon-green">
                     <ArrowRightIcon />
                   </span>
                 </HoverBorderGradient>
               </Link>
+              {/* Subtext below the button */}
+              <p className="text-gray-400 text-center mt-1 text-xs">
+                Sign up here to Register for the events
+              </p>
             </div>
           </motion.div>
         </AnimatePresence>

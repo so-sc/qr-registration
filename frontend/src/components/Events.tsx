@@ -42,7 +42,7 @@ export default function Events() {
       title: "Capture the Flag",
       caption: "Are you ready for a mind-bending challenge?",
       description:
-        "Showcase your problem-solving skills and advance through rounds in our Capture the Flag competition. It’s an exciting quest where your talent and ingenuity will lead you to victory. Uncover clues and capture flags to rise to the top!",
+        "Test your problem-solving skills in our Capture the Flag competition. Uncover clues, capture flags, and rise to victory!",
       organizer: "Yash Laxman - 6362072050",
       date: "8th Nov",
       time: "10:30am - 12:00pm",
