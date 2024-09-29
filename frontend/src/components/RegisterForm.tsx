@@ -22,7 +22,7 @@ export default function RegisterForm() {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch("https://devhostapi.sosc.org.in/check-auth", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
           credentials: "include",
         });
         if (res.status === 200) {
@@ -55,7 +55,7 @@ export default function RegisterForm() {
       usn,
     }
     try {
-      const response = await fetch("https://devhostapi.sosc.org.in/details_update", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/details_update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -29,7 +29,7 @@ export default function EventSelection() {
     setLoading(true);
   
     try {
-      const response = await fetch("https://devhostapi.sosc.org.in/createOrder", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ export default function EventSelection() {
   };
   const verifyPayment = async (response: any, events: string[]) => {
     try {
-      const verificationResponse = await fetch("https://devhostapi.sosc.org.in/verPayment", {
+      const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

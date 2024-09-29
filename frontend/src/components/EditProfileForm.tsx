@@ -18,7 +18,7 @@ export default function RegisterForm() {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch("https://devhostapi.sosc.org.in/check-auth", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
           credentials: "include",
         });
         if (res.status === 200) {
@@ -47,7 +47,7 @@ export default function RegisterForm() {
       interests,
     }
     try {
-      const response = await fetch("https://devhostapi.sosc.org.in/socials_upd", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/socials_upd`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -36,7 +36,7 @@ export default function ProfilePage() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const gid = urlParams.get('gid');
-            const res = await fetch(`https://devhostapi.sosc.org.in/viewprofile?gid=${gid}`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}?gid=${gid}`);
             const resData: ProfileData = await res.json();
             setProfileData(resData);
             if (res.status === 200) {

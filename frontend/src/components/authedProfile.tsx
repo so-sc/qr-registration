@@ -25,7 +25,7 @@ export default function ProfilePage() {
     useEffect(() => {
         const getUserData = async () => {
           try {
-            const res = await fetch("https://devhostapi.sosc.org.in/check-auth", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
               credentials: "include",
             });
             if (res.status === 200) {

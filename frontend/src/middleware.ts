@@ -3,11 +3,8 @@ import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers'
 
 export async function middleware(req: NextRequest) {
-  console.log(req.headers)
-  const cookieStore = cookies()
-  const theme = cookieStore.get('connect.sid')
-  console.log(theme)
-  const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
+  console.log(req.cookies)
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
@@ -21,7 +18,7 @@ export async function middleware(req: NextRequest) {
 
 
   if (res.status === 401) {
-    // return NextResponse.redirect(new URL('https://devhostapi.sosc.org.in/auth/google/', req.url));
+    return NextResponse.redirect(new URL(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google/`, req.url));
     console.log("Auth Failed..redir to login")
   } else {
     if (userData.user?.college && req.nextUrl.pathname === '/register') {
@@ -33,5 +30,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/events','/edit', '/register'],runtime: 'nodejs',
+  matcher: ['/events','/edit', '/register'],
 };
