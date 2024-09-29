@@ -4,14 +4,13 @@ import { NextRequest } from 'next/server';
 export async function middleware(req: NextRequest) {
   // Extract cookies from the request
   console.log(req.headers)
-  console.log(req)
 
   // Fetch the check-auth endpoint, passing the cookies explicitly
   const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
-        'Cookie': req.headers.get('cookie') || '',
+        'cookie': req.headers.get('cookie') || '',
     },
     credentials: 'include',
 });
