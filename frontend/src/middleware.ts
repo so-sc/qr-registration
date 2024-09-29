@@ -8,11 +8,13 @@ export async function middleware(req: NextRequest) {
 
   // Fetch the check-auth endpoint, passing the cookies explicitly
   const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
+    method: 'GET',
     headers: {
-      cookie: req.cookies.getAll().map(cookie => `${cookie.name}=${cookie.value}`).join('; '),
+        'Content-Type': 'application/json',
+        'Cookie': req.headers.get('cookie') || '',
     },
-    credentials: 'include', // Ensure credentials are included
-  });
+    credentials: 'include',
+});
 
   const userData = await res.json();
   console.log('Auth Response:', userData);
