@@ -4,6 +4,9 @@ import { NextRequest } from 'next/server';
 export async function middleware(req: NextRequest) {
   const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
     credentials: "include",
+    headers: {
+      cookie: req.headers.get('cookie') || '', // Pass the incoming cookies
+    },
   });
   const userData= await res.json();
   if (res.status === 401) {
