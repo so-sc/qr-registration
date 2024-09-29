@@ -5,7 +5,7 @@ export async function middleware(req: NextRequest) {
   const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
     credentials: "include",
     headers: {
-      cookie: req.headers.get('cookie') || '', // Pass the incoming cookies
+      cookie: req.headers.get('cookie') || '',
     },
   });
   const userData= await res.json();
@@ -18,5 +18,5 @@ else{
   return NextResponse.next();
 }
 export const config = {
-  matcher: ['/events','/profile','/edit','/register'],
+  matcher: ['/events','/edit','/register'],
 };
