@@ -3,15 +3,11 @@ import { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   // Extract cookies from the request
-  const cookieHeader = req.headers.get('cookie') || '';
-
-  // Log cookies for debugging
-  console.log('Middleware cookies:', cookieHeader);
 
   // Fetch the check-auth endpoint, passing the cookies explicitly
   const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
     headers: {
-      cookie: cookieHeader,  // Pass cookies to the backend
+      cookie: req.cookies.getAll().map(cookie => `${cookie.name}=${cookie.value}`).join('; '),
     },
     credentials: 'include', // Ensure credentials are included
   });
@@ -22,7 +18,7 @@ export async function middleware(req: NextRequest) {
   // Handle authentication status
   if (res.status === 401) {
     // Redirect to Google authentication if not authenticated
-    // return NextResponse.redirect(new URL('https://devhostapi.sosc.org.in/auth/google/', req.url));
+    return NextResponse.redirect(new URL('https://devhostapi.sosc.org.in/auth/google/', req.url));
     console.log("Auth Failed..redir to login")
   } else {
     // If authenticated and trying to access /register but the user has college data, redirect to /events
