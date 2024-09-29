@@ -3,7 +3,9 @@ import { NextRequest } from 'next/server';
 
 export async function middleware(req: NextRequest) {
   // Extract cookies from the request
-  console.log(req.headers.get('cookie'))
+  console.log(req.headers)
+  console.log(req)
+
   // Fetch the check-auth endpoint, passing the cookies explicitly
   const res = await fetch('https://devhostapi.sosc.org.in/check-auth', {
     headers: {
