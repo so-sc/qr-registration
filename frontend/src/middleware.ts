@@ -17,5 +17,5 @@ else{
   return NextResponse.next();
 }
 export const config = {
-  matcher: ['/events','/profile','/edit'],
+  matcher: ['/events','/profile','/edit','/register'],
 };
