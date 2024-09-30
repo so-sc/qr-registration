@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
-    origin: `https://devhost.sosc.org.in`,
+    origin: `${process.env.FRONTHOST}`,
     credentials: true,
 }));
 const razorpayInstance = new Razorpay({

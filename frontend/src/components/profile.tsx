@@ -36,7 +36,11 @@ export default function ProfilePage() {
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const gid = urlParams.get('gid');
-            const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}?gid=${gid}`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/viewprofile?gid=${gid}`,{
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
             const resData: ProfileData = await res.json();
             console.log({resData,res})
             setProfileData(resData);
