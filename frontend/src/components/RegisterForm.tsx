@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import test from "node:test"
 export default function RegisterForm() {
   const router=useRouter();
   const [name, setName] = useState("")
@@ -19,6 +20,7 @@ export default function RegisterForm() {
   const [year, setYear] = useState("")
   const [usn, setUsn] = useState("")
   const [loading, setLoading] = useState(false)
+  const [testLoad,setTestLoad]= useState(true)
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -27,6 +29,7 @@ export default function RegisterForm() {
         });
         if (res.status === 200) {
           const data = await res.json();
+          setTestLoad(false)
           console.log(data.user);
           const user = data.user;
           setName(user.username);
@@ -85,6 +88,8 @@ export default function RegisterForm() {
       setLoading(false)
     }
     }
+    if(testLoad) return (<></>)
+    else 
   return (
     <div className="max-w-2xl mx-auto md:pt-5 pt-10">
       <div className="fixed top-0 left-0 border-white/10 bg-background z-50 w-full p-5 py-7 border-b">
