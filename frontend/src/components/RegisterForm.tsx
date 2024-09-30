@@ -32,6 +32,9 @@ export default function RegisterForm() {
           setTestLoad(false)
           console.log(data.user);
           const user = data.user;
+          if(user.college){
+          window.location.replace("events");
+          }
           setName(user.username);
           setEmail(user.email);
         } else {
