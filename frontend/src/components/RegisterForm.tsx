@@ -33,11 +33,11 @@ export default function RegisterForm() {
           setEmail(user.email);
         } else {
           console.log("failed");
-          router.push("/register");
+          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
         }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        router.push("/register");
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
       }
     };
     
