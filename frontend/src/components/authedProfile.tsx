@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from 'next/router'
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -21,6 +22,7 @@ interface ProfileData {
     git:string;
   }
 export default function ProfilePage() {
+    const router=useRouter();
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
     useEffect(() => {
         const getUserData = async () => {
@@ -35,9 +37,11 @@ export default function ProfilePage() {
                 
             } else {
               console.log("failed");
+              router.push(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
             }
           } catch (error) {
             console.error("Failed to fetch user details:", error);
+            router.push(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
           }
         };
         
