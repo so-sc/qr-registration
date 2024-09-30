@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+// import { redirect } from 'next/navigation'
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -25,7 +26,7 @@ export default function ProfilePage() {
     useEffect(() => {
         const getUserData = async () => {
           try {
-            const res = await fetch("http://localhost:8079/check-auth", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
               credentials: "include",
             });
             if (res.status === 200) {
@@ -35,9 +36,12 @@ export default function ProfilePage() {
                 
             } else {
               console.log("failed");
+              window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+
             }
           } catch (error) {
             console.error("Failed to fetch user details:", error);
+            window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
           }
         };
         

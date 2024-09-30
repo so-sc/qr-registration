@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import test from "node:test"
 export default function RegisterForm() {
   const router=useRouter();
   const [name, setName] = useState("")
@@ -19,25 +20,30 @@ export default function RegisterForm() {
   const [year, setYear] = useState("")
   const [usn, setUsn] = useState("")
   const [loading, setLoading] = useState(false)
+  const [testLoad,setTestLoad]= useState(true)
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch("http://localhost:8079/check-auth", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
           credentials: "include",
         });
         if (res.status === 200) {
           const data = await res.json();
+          setTestLoad(false)
           console.log(data.user);
           const user = data.user;
+          if(user.college){
+          window.location.replace("events");
+          }
           setName(user.username);
           setEmail(user.email);
         } else {
           console.log("failed");
-          router.push("/register");
+          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
         }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        router.push("/register");
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
       }
     };
     
@@ -55,7 +61,7 @@ export default function RegisterForm() {
       usn,
     }
     try {
-      const response = await fetch("http://localhost:8079/details_update", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/details_update`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,6 +91,8 @@ export default function RegisterForm() {
       setLoading(false)
     }
     }
+    if(testLoad) return (<></>)
+    else 
   return (
     <div className="max-w-2xl mx-auto md:pt-5 pt-10">
       <div className="fixed top-0 left-0 border-white/10 bg-background z-50 w-full p-5 py-7 border-b">

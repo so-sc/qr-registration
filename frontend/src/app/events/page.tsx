@@ -1,16 +1,30 @@
 "use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
 import Link from "next/link";
-import { ArrowLeft, User, Check } from "lucide-react";
-import Script from "next/script";
-
+import React, { useEffect, useState } from "react";
+import { ArrowLeft, User, Mail, Phone, School, Calendar, LucideIcon } from "lucide-react";
+import Script from 'next/script';
+interface ProfileData {
+  name: string;
+  college: string;
+  phone: string;
+  email: string;
+  year: string;
+  branch: string;
+  insta:string;
+  portf:string;
+  ldn:string;
+  git:string;
+  message:string;
+  events:[string];
+}
 export default function EventSelection() {
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [testLoad, setTestLoad] = useState(true);
 
   const handleEventSelection = (eid: string) => {
     if (selectedEvents.includes(eid)) {
@@ -29,7 +43,7 @@ export default function EventSelection() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8079/createOrder", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +97,7 @@ export default function EventSelection() {
 
   const verifyPayment = async (response: any, events: string[]) => {
     try {
-      const verificationResponse = await fetch("http://localhost:8079/verPayment", {
+      const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,8 +121,30 @@ export default function EventSelection() {
       toast.error("Error verifying payment:", error);
     }
   };
+    const getUserData = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
+          credentials: "include",
+        });
+        if (res.status === 200) {
+          const data = await res.json();
+          console.log(data.user);
+          setTestLoad(false)
+        } else {
+          console.log("failed");
+          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+      }
+    };
 
-  return (
+    useEffect(() => {
+        getUserData();
+    }, []);
+    if(testLoad) return (<></>)
+  else  return (
     <>
       <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
       <header className="bg-[#1A1A1A] shadow">
