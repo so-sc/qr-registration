@@ -21,17 +21,15 @@ app.use(session({
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: process.env.mongoUri }),
     cookie: {
-        sameSite: 'none',
-        secure: true,
         httpOnly: true,
     }
 }));
-const PORT = 8080;
+const {PORT} = process.env;
 app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors({
-    origin: 'https://devhost.sosc.org.in',
+    origin: `https://devhost.sosc.org.in`,
     credentials: true,
 }));
 const razorpayInstance = new Razorpay({
@@ -57,7 +55,7 @@ app.get('/update-details', isLoggedIn, (req, res) => {
     console.log(req.isAuthenticated());
 });
 app.get('/google-callback', passport.authenticate('google', {
-    successRedirect: `https://devhost.sosc.org.in/register`,
+    successRedirect: `${process.env.FRONTHOST}/register`,
     failureRedirect: '/auth/failed'
 }));
 app.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));

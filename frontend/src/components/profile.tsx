@@ -38,6 +38,7 @@ export default function ProfilePage() {
             const gid = urlParams.get('gid');
             const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}?gid=${gid}`);
             const resData: ProfileData = await res.json();
+            console.log({resData,res})
             setProfileData(resData);
             if (res.status === 200) {
                 console.log("fetched",resData);
