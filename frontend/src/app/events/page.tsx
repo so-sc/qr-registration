@@ -4,7 +4,7 @@ import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { ArrowLeft, User, Mail, Phone, School, Calendar, LucideIcon } from "lucide-react";
+import { ArrowLeft, User, Mail, Phone, School, Calendar, LucideIcon ,Check} from "lucide-react";
 import Script from 'next/script';
 interface ProfileData {
   name: string;
