@@ -144,13 +144,8 @@ export default function EventSelection() {
     useEffect(() => {
         getUserData();
     }, []);
-    console.log(profileData,!profileData)
-    if (!profileData||profileData.message=='unknown') {
-        console.log("hey");
-        return (<></>);
-    
-    }
-  
+    if(testLoad) return (<></>)
+  else
   return (<>
        <Script id="razorpay-checkout-js"src="https://checkout.razorpay.com/v1/checkout.js"/>
        <header className="bg-[#2A2A2A] shadow">
