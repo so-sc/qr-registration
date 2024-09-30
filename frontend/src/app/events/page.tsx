@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -40,9 +39,9 @@ export default function EventSelection() {
       toast.error("Please select at least one event to continue.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
         method: "POST",
@@ -51,15 +50,15 @@ export default function EventSelection() {
         },
         credentials: "include",
         body: JSON.stringify({
-          amount: 10,
+          amount: 10, // Adjust this as needed
           currency: "INR",
           events: selectedEvents,
         }),
       });
-  
+
       const orderData = await response.json();
       console.log(orderData);
-  
+
       if (orderData && orderData.id) {
         if (window.Razorpay) {
           const options = {
@@ -82,7 +81,7 @@ export default function EventSelection() {
               color: "#4caf50",
             },
           };
-  
+
           const rzp1 = new window.Razorpay(options);
           rzp1.open();
         } else {
@@ -95,6 +94,7 @@ export default function EventSelection() {
       setLoading(false);
     }
   };
+
   const verifyPayment = async (response: any, events: string[]) => {
     try {
       const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
@@ -110,18 +110,17 @@ export default function EventSelection() {
           events,
         }),
       });
-  
+
       const verifyData = await verificationResponse.json();
-      if (verifyData.success==true) {
+      if (verifyData.success == true) {
         toast.success("Payment Verified Successfully!");
       } else {
         toast.error("Payment Verification Failed!");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast.error("Error verifying payment:", error);
     }
   };
-
     const getUserData = async () => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
@@ -145,58 +144,72 @@ export default function EventSelection() {
         getUserData();
     }, []);
     if(testLoad) return (<></>)
-  else
-  return (<>
-       <Script id="razorpay-checkout-js"src="https://checkout.razorpay.com/v1/checkout.js"/>
-       <header className="bg-[#2A2A2A] shadow">
-                <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <Link href="/" className="flex items-center space-x-2 text-[#b4ff39]">
-                        <ArrowLeft className="h-5 w-5" />
-                        <span>Back to Home</span>
-                    </Link>
-                    <Link href="/profile" className="flex items-center space-x-2 text-[#b4ff39]">
-                    <Button variant="outline" className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E]">
-                        <User className="h-5 w-5" />
-                        <span>Profile</span>
-                    </Button>
-                    </Link>
-                </div>
-                
-            </header>
-    <div className="max-w-2xl mx-auto pt-10">
-      <h1 className="text-2xl font-bold mb-6 text-center">Select Events</h1>
-      <div className="space-y-4">
-        {EVENTS.map((event, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-between border p-4 rounded-lg"
+  else  return (
+    <>
+      <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
+      <header className="bg-[#1A1A1A] shadow">
+        <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <Link
+            href="/"
+            className="flex items-center space-x-2 text-[#d4d4d4] hover:text-[#aef737] transition-colors"
           >
-            <div className="flex flex-col">
-              <span className="font-semibold">{event.name}</span>
-              <span className="text-sm text-gray-500">{event.type}</span>
-              <span className="text-sm text-gray-500">
-                Speaker: {event.speaker}
-              </span>
-              <span className="text-sm text-gray-500">
-                Date: {event.date} | Time: {event.time}
-              </span>
+            <ArrowLeft className="h-5 w-5" />
+            <span>Back to Home</span>
+          </Link>
+          <Link href="/profile">
+            <Button
+              variant="outline"
+              className="flex items-center space-x-2 bg-transparent text-[#d4d4d4] border-[#d4d4d4] hover:bg-[#aef737] hover:text-[#1A1A1A] hover:border-[#aef737] transition-colors"
+            >
+              <User className="h-5 w-5" />
+              <span>Profile</span>
+            </Button>
+          </Link>
+        </div>
+      </header>
+      <div className="max-w-2xl mx-auto pt-10 px-4 pb-16">
+        <h1 className="text-3xl font-bold mb-8 text-center text-white">Select Events</h1>
+        <div className="space-y-6">
+          {EVENTS.map((event, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between space-x-4 bg-[#222222] p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+            >
+              <div className="flex items-center space-x-4 flex-1">
+                <div
+                  className={`flex-shrink-0 w-6 h-6 border-2 rounded-md cursor-pointer transition-colors ${
+                    selectedEvents.includes(event.event_id)
+                      ? "bg-[#aef737] border-[#aef737]"
+                      : "border-[#d4d4d4]"
+                  }`}
+                  onClick={() => handleEventSelection(event.event_id)}
+                >
+                  {selectedEvents.includes(event.event_id) && (
+                    <Check className="text-[#1A1A1A] w-5 h-5" />
+                  )}
+                </div>
+
+                <div className="flex-1 flex flex-col justify-center">
+                  <h3 className="font-semibold text-lg text-[#aef737]">{event.name}</h3>
+                  <p className="text-sm text-white">{event.description}</p>
+                  <p className="text-sm text-[#a0a0a0]">Date: {event.date}</p>
+                  <p className="text-sm text-[#a0a0a0]">Time: {event.time}</p>
+                </div>
+              </div>
+              <div className="flex-shrink-0 text-[#aef737] text-lg font-bold">
+                ₹{event.price}
+              </div>
             </div>
-            <Input
-              type="checkbox"
-              checked={selectedEvents.includes(event.event_id)}
-              disabled={loading}
-              onChange={() => handleEventSelection(event.event_id)}
-            />
-          </div>
-        ))}
+          ))}
+        </div>
+        <Button
+          className="mt-8 w-full bg-[#aef737] text-[#1A1A1A] hover:bg-[#8ed626] transition-colors"
+          disabled={loading}
+          onClick={handleSubmit}
+        >
+          {loading ? "Submitting..." : "Register for Selected Events"}
+        </Button>
       </div>
-      <Button
-        className="mt-6 w-full"
-        disabled={loading}
-        onClick={handleSubmit}
-      >
-        {loading ? "Submitting..." : "Submit Selected Events"}
-      </Button>
-    </div></>
+    </>
   );
 }
