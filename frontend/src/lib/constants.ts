@@ -245,6 +245,8 @@ export const EVENTS = [
     type: "event",
     event_id: "101",
     price: 100,
+    min_members: 1,
+    max_members: 5,
   },
   {
     name: "Competitive Programming",
@@ -255,6 +257,8 @@ export const EVENTS = [
     type: "event",
     event_id: "102",
     price: 100,
+    min_members: 1,
+    max_members: 5,
   },
   {
     name: "Capture the Flag",
@@ -265,6 +269,8 @@ export const EVENTS = [
     type: "event",
     event_id: "103",
     price: 100,
+    min_members: 1,
+    max_members: 5,
   },
   {
     name: "Blind Coding",
@@ -275,6 +281,8 @@ export const EVENTS = [
     type: "event",
     event_id: "104",
     price: 100,
+    min_members: 1,
+    max_members: 5,
   },
   {
     name: "Tech-Pitch",
@@ -285,6 +293,8 @@ export const EVENTS = [
     type: "event",
     event_id: "105",
     price: 100,
+    min_members: 1,
+    max_members: 5,
   },
   {
     name: "BGMI: Battlegrounds Mobile India",
@@ -295,6 +305,8 @@ export const EVENTS = [
     type: "event",
     event_id: "106",
     price: 100,
+    min_members: 1,
+    max_members: 5,
   },
   {
     name: "Valorant",
@@ -305,6 +317,8 @@ export const EVENTS = [
     type: "event",
     event_id: "107",
     price: 100,
+    min_members: 1,
+    max_members: 5,
   },
   // {
   //   name: "Rubix Cube",

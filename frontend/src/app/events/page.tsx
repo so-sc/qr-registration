@@ -1,23 +1,67 @@
 "use client";
-
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
 import Link from "next/link";
-import { ArrowLeft, User, Check } from "lucide-react";
-import Script from "next/script";
+import React, { useEffect, useState } from "react";
+import { ArrowLeft, User } from "lucide-react";
+import Script from 'next/script';
+
+interface ProfileData {
+  name: string;
+  college: string;
+  phone: string;
+  email: string;
+  year: string;
+  branch: string;
+  insta: string;
+  portf: string;
+  ldn: string;
+  git: string;
+  message: string;
+  events: string[];
+}
 
 export default function EventSelection() {
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [testLoad, setTestLoad] = useState(true);
+  const [members, setMembers] = useState<Record<string, { name: string; email: string }[]>>({});
 
   const handleEventSelection = (eid: string) => {
     if (selectedEvents.includes(eid)) {
       setSelectedEvents(selectedEvents.filter((event_id) => event_id !== eid));
+      delete members[eid]; 
+      setMembers({ ...members });
     } else {
       setSelectedEvents([...selectedEvents, eid]);
+      setMembers({ ...members, [eid]: [] }); 
     }
+  };
+
+  const handleAddMember = (eventId: string) => {
+    const eventMembers = members[eventId] || [];
+    const maxMembers = EVENTS.find(event => event.event_id === eventId)!.max_members;
+    if (eventMembers.length < maxMembers) {
+      setMembers({
+        ...members,
+        [eventId]: [...eventMembers, { name: "", email: "" }],
+      });
+    } else {
+      toast.error(`Cannot add more than ${maxMembers} members.`);
+    }
+  };
+
+  const handleDeleteMember = (eventId: string, index: number) => {
+    const updatedMembers = members[eventId].filter((_, i) => i !== index);
+    setMembers({ ...members, [eventId]: updatedMembers });
+  };
+
+  const handleMemberChange = (eventId: string, index: number, field: "name" | "email", value: string) => {
+    const updatedMembers = [...(members[eventId] || [])];
+    updatedMembers[index][field] = value;
+    setMembers({ ...members, [eventId]: updatedMembers });
   };
 
   const handleSubmit = async () => {
@@ -26,10 +70,21 @@ export default function EventSelection() {
       return;
     }
 
+    const allMembersValid = selectedEvents.every(eventId => {
+      const eventMembers = members[eventId] || [];
+      const minMembers = EVENTS.find(event => event.event_id === eventId)?.min_members || 1;
+      return eventMembers.length >= minMembers;
+    });
+
+    if (!allMembersValid) {
+      toast.error("Please add the required number of members for each selected event.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8079/createOrder", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +138,7 @@ export default function EventSelection() {
 
   const verifyPayment = async (response: any, events: string[]) => {
     try {
-      const verificationResponse = await fetch("http://localhost:8079/verPayment", {
+      const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -107,6 +162,31 @@ export default function EventSelection() {
       toast.error("Error verifying payment:", error);
     }
   };
+
+  const getUserData = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
+        credentials: "include",
+      });
+      if (res.status === 200) {
+        const data = await res.json();
+        console.log(data.user);
+        setTestLoad(false);
+      } else {
+        console.log("failed");
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user details:", error);
+      window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  if (testLoad) return (<></>);
 
   return (
     <>
@@ -135,43 +215,60 @@ export default function EventSelection() {
         <h1 className="text-3xl font-bold mb-8 text-center text-white">Select Events</h1>
         <div className="space-y-6">
           {EVENTS.map((event, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between space-x-4 bg-[#222222] p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow"
-            >
-              <div className="flex items-center space-x-4 flex-1">
-                <div
-                  className={`flex-shrink-0 w-6 h-6 border-2 rounded-md cursor-pointer transition-colors ${
-                    selectedEvents.includes(event.event_id)
-                      ? "bg-[#aef737] border-[#aef737]"
-                      : "border-[#d4d4d4]"
-                  }`}
-                  onClick={() => handleEventSelection(event.event_id)}
-                >
-                  {selectedEvents.includes(event.event_id) && (
-                    <Check className="text-[#1A1A1A] w-5 h-5" />
-                  )}
-                </div>
-
-                <div className="flex-1 flex flex-col justify-center">
-                  <h3 className="font-semibold text-lg text-[#aef737]">{event.name}</h3>
-                  <p className="text-sm text-white">{event.description}</p>
-                  <p className="text-sm text-[#a0a0a0]">Date: {event.date}</p>
-                  <p className="text-sm text-[#a0a0a0]">Time: {event.time}</p>
-                </div>
+            <div key={event.event_id}>
+              <div
+                className={`bg-[#2B2B2B] p-4 rounded-lg cursor-pointer hover:bg-[#3E3E3E] transition-colors`}
+                onClick={() => handleEventSelection(event.event_id)}
+              >
+                <h2 className="text-lg font-semibold text-white">{event.name}</h2>
+                <p className="text-gray-400">{event.description}</p>
+                <p className="text-gray-400">
+                  {event.date} - {event.time}
+                </p>
+                <p className="text-gray-400">Organizer: {event.organizer}</p>
+                <p className="text-gray-400">
+                  Selected: {selectedEvents.includes(event.event_id) ? "Yes" : "No"}
+                </p>
               </div>
-              <div className="flex-shrink-0 text-[#aef737] text-lg font-bold">
-                ₹{event.price}
-              </div>
+              {selectedEvents.includes(event.event_id) && (
+                <div className="mt-4 bg-[#1C1C1C] p-4 rounded-lg">
+                  <h3 className="text-md font-semibold text-white">Team Members</h3>
+                  <div className="space-y-4">
+                    {members[event.event_id]?.map((member, index) => (
+                      <div key={index} className="flex space-x-2 items-center">
+                        <input
+                          type="text"
+                          placeholder="Name"
+                          value={member.name}
+                          onChange={(e) => handleMemberChange(event.event_id, index, "name", e.target.value)}
+                          className="p-2 rounded-md bg-[#3E3E3E] text-white"
+                          required
+                        />
+                        <input
+                          type="email"
+                          placeholder="Email"
+                          value={member.email}
+                          onChange={(e) => handleMemberChange(event.event_id, index, "email", e.target.value)}
+                          className="p-2 rounded-md bg-[#3E3E3E] text-white"
+                          required
+                        />
+                        <Button
+                          variant="destructive"
+                          onClick={() => handleDeleteMember(event.event_id, index)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ))}
+                    <Button onClick={() => handleAddMember(event.event_id)}>Add Member</Button>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
-        <Button
-          className="mt-8 w-full bg-[#aef737] text-[#1A1A1A] hover:bg-[#8ed626] transition-colors"
-          disabled={loading}
-          onClick={handleSubmit}
-        >
-          {loading ? "Submitting..." : "Register for Selected Events"}
+        <Button onClick={handleSubmit} className="mt-8 w-full" disabled={loading}>
+          {loading ? "Processing..." : "Proceed to Payment"}
         </Button>
       </div>
     </>
