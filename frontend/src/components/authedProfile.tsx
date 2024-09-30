@@ -37,6 +37,7 @@ export default function ProfilePage() {
             } else {
               console.log("failed");
             //   redirect(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+            window.location.href="https://devhostapi.sosc.org.in/auth/google";
             }
           } catch (error) {
             console.error("Failed to fetch user details:", error);
