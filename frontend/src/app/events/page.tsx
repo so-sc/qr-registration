@@ -1,104 +1,173 @@
 "use client";
+
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import { ArrowLeft, User } from "lucide-react";
-import Script from 'next/script';
+import { ArrowLeft, User, Check, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
+import Script from "next/script";
 
-interface ProfileData {
+interface Event {
+  event_id: string;
   name: string;
-  college: string;
-  phone: string;
+  description: string;
+  price: number;
+  date: string;
+  time: string;
+}
+
+interface Member {
+  name: string;
   email: string;
-  year: string;
-  branch: string;
-  insta: string;
-  portf: string;
-  ldn: string;
-  git: string;
-  message: string;
-  events: string[];
+}
+
+interface SelectedEvent {
+  selected: boolean;
+  members: Member[];
+}
+
+interface SelectedEvents {
+  [key: string]: SelectedEvent;
+}
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
 }
 
 export default function EventSelection() {
-  const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
+  const [selectedEvents, setSelectedEvents] = useState<SelectedEvents>({});
   const [loading, setLoading] = useState(false);
-  const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [testLoad, setTestLoad] = useState(true);
-  const [members, setMembers] = useState<Record<string, { name: string; email: string }[]>>({});
+
+  const isValidEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateMembers = (members: Member[]): { isValid: boolean; error?: string } => {
+    for (const member of members) {
+      if (!member.name.trim()) {
+        return { isValid: false, error: "All name fields must be filled" };
+      }
+      if (!member.email.trim()) {
+        return { isValid: false, error: "All email fields must be filled" };
+      }
+      if (!isValidEmail(member.email)) {
+        return { isValid: false, error: `Invalid email format: ${member.email}` };
+      }
+    }
+    return { isValid: true };
+  };
 
   const handleEventSelection = (eid: string) => {
-    if (selectedEvents.includes(eid)) {
-      setSelectedEvents(selectedEvents.filter((event_id) => event_id !== eid));
-      delete members[eid]; 
-      setMembers({ ...members });
-    } else {
-      setSelectedEvents([...selectedEvents, eid]);
-      setMembers({ ...members, [eid]: [] }); 
+    setSelectedEvents((prev) => ({
+      ...prev,
+      [eid]: prev[eid]
+        ? { ...prev[eid], selected: !prev[eid].selected }
+        : { selected: true, members: [] },
+    }));
+  };
+
+  const handleAddMember = (eid: string) => {
+    const eventDetails = EVENTS.find((e) => e.event_id === eid);
+    if (!eventDetails) return;
+
+    const { max_members: MAX_MEMBERS } = eventDetails;
+
+    if (selectedEvents[eid]?.members.length >= MAX_MEMBERS) {
+      toast.error(`Maximum ${MAX_MEMBERS} members allowed for this event.`);
+      return;
     }
+    setSelectedEvents((prev) => ({
+      ...prev,
+      [eid]: {
+        ...prev[eid],
+        members: [...(prev[eid]?.members || []), { name: "", email: "" }],
+      },
+    }));
+  };
+  const handleRemoveMember = (eid: string, index: number) => {
+    setSelectedEvents((prev) => ({
+      ...prev,
+      [eid]: {
+        ...prev[eid],
+        members: prev[eid].members.filter((_, i) => i !== index),
+      },
+    }));
   };
 
-  const handleAddMember = (eventId: string) => {
-    const eventMembers = members[eventId] || [];
-    const maxMembers = EVENTS.find(event => event.event_id === eventId)!.max_members;
-    if (eventMembers.length < maxMembers) {
-      setMembers({
-        ...members,
-        [eventId]: [...eventMembers, { name: "", email: "" }],
-      });
-    } else {
-      toast.error(`Cannot add more than ${maxMembers} members.`);
-    }
-  };
-
-  const handleDeleteMember = (eventId: string, index: number) => {
-    const updatedMembers = members[eventId].filter((_, i) => i !== index);
-    setMembers({ ...members, [eventId]: updatedMembers });
-  };
-
-  const handleMemberChange = (eventId: string, index: number, field: "name" | "email", value: string) => {
-    const updatedMembers = [...(members[eventId] || [])];
-    updatedMembers[index][field] = value;
-    setMembers({ ...members, [eventId]: updatedMembers });
+  const handleMemberInput = (
+    eid: string,
+    index: number,
+    field: keyof Member,
+    value: string
+  ) => {
+    setSelectedEvents((prev) => ({
+      ...prev,
+      [eid]: {
+        ...prev[eid],
+        members: prev[eid].members.map((member, i) =>
+          i === index ? { ...member, [field]: value } : member
+        ),
+      },
+    }));
   };
 
   const handleSubmit = async () => {
-    if (selectedEvents.length === 0) {
+    const selectedEventIds = Object.keys(selectedEvents).filter(
+      (eid) => selectedEvents[eid].selected
+    );
+  
+    if (selectedEventIds.length === 0) {
       toast.error("Please select at least one event to continue.");
       return;
     }
-
-    const allMembersValid = selectedEvents.every(eventId => {
-      const eventMembers = members[eventId] || [];
-      const minMembers = EVENTS.find(event => event.event_id === eventId)?.min_members || 1;
-      return eventMembers.length >= minMembers;
-    });
-
-    if (!allMembersValid) {
-      toast.error("Please add the required number of members for each selected event.");
-      return;
+  
+    for (const eid of selectedEventIds) {
+      const event = selectedEvents[eid];
+      const memberCount = event.members.length;
+      const eventDetails = EVENTS.find((e) => e.event_id === eid);
+      
+      if (!eventDetails) continue;
+  
+      const { min_members: MIN_MEMBERS, max_members: MAX_MEMBERS } = eventDetails;
+      
+      if (memberCount < MIN_MEMBERS) {
+        toast.error(`Event ${eventDetails.name} requires at least ${MIN_MEMBERS} members.`);
+        return;
+      }
+      if (memberCount > MAX_MEMBERS) {
+        toast.error(`Event ${eventDetails.name} allows a maximum of ${MAX_MEMBERS} members.`);
+        return;
+      }
+      
+      const validation = validateMembers(event.members);
+      if (!validation.isValid) {
+        toast.error(`${validation.error} for ${eventDetails.name}`);
+        return;
+      }
     }
+  
 
     setLoading(true);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
+      const response = await fetch("http://localhost:8079/createOrder", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({
-          amount: 10, // Adjust this as needed
+          amount: 10,
           currency: "INR",
-          events: selectedEvents,
+          events: selectedEventIds,
         }),
       });
 
       const orderData = await response.json();
-      console.log(orderData);
 
       if (orderData && orderData.id) {
         if (window.Razorpay) {
@@ -110,8 +179,7 @@ export default function EventSelection() {
             description: "Fee for selected events",
             order_id: orderData.id,
             handler: function (response: any) {
-              console.log(response);
-              verifyPayment(response, selectedEvents);
+              verifyPayment(response, selectedEventIds);
             },
             prefill: {
               name: "John Doe",
@@ -130,7 +198,7 @@ export default function EventSelection() {
         }
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -138,7 +206,7 @@ export default function EventSelection() {
 
   const verifyPayment = async (response: any, events: string[]) => {
     try {
-      const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
+      const verificationResponse = await fetch("http://localhost:8079/verPayment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -153,40 +221,15 @@ export default function EventSelection() {
       });
 
       const verifyData = await verificationResponse.json();
-      if (verifyData.success == true) {
+      if (verifyData.success) {
         toast.success("Payment Verified Successfully!");
       } else {
         toast.error("Payment Verification Failed!");
       }
-    } catch (error: any) {
-      toast.error("Error verifying payment:", error);
-    }
-  };
-
-  const getUserData = async () => {
-    try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
-        credentials: "include",
-      });
-      if (res.status === 200) {
-        const data = await res.json();
-        console.log(data.user);
-        setTestLoad(false);
-      } else {
-        console.log("failed");
-        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
-      }
     } catch (error) {
-      console.error("Failed to fetch user details:", error);
-      window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+      toast.error("Error verifying payment");
     }
   };
-
-  useEffect(() => {
-    getUserData();
-  }, []);
-
-  if (testLoad) return (<></>);
 
   return (
     <>
@@ -214,61 +257,100 @@ export default function EventSelection() {
       <div className="max-w-2xl mx-auto pt-10 px-4 pb-16">
         <h1 className="text-3xl font-bold mb-8 text-center text-white">Select Events</h1>
         <div className="space-y-6">
-          {EVENTS.map((event, index) => (
-            <div key={event.event_id}>
+          {EVENTS.map((event: Event) => (
+            <div
+              key={event.event_id}
+              className="bg-[#222222] rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+            >
               <div
-                className={`bg-[#2B2B2B] p-4 rounded-lg cursor-pointer hover:bg-[#3E3E3E] transition-colors`}
+                className="flex items-center justify-between p-4 cursor-pointer"
                 onClick={() => handleEventSelection(event.event_id)}
               >
-                <h2 className="text-lg font-semibold text-white">{event.name}</h2>
-                <p className="text-gray-400">{event.description}</p>
-                <p className="text-gray-400">
-                  {event.date} - {event.time}
-                </p>
-                <p className="text-gray-400">Organizer: {event.organizer}</p>
-                <p className="text-gray-400">
-                  Selected: {selectedEvents.includes(event.event_id) ? "Yes" : "No"}
-                </p>
+                <div className="flex items-center space-x-4 flex-1">
+                  <div
+                    className={`flex-shrink-0 w-6 h-6 border-2 rounded-md transition-colors ${
+                      selectedEvents[event.event_id]?.selected
+                        ? "bg-[#aef737] border-[#aef737]"
+                        : "border-[#d4d4d4]"
+                    }`}
+                  >
+                    {selectedEvents[event.event_id]?.selected && (
+                      <Check className="text-[#1A1A1A] w-5 h-5" />
+                    )}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-lg text-[#aef737]">{event.name}</h3>
+                    <p className="text-sm text-white">{event.description}</p>
+                    <p className="text-sm text-[#a0a0a0]">Date: {event.date}</p>
+                    <p className="text-sm text-[#a0a0a0]">Time: {event.time}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="text-[#aef737] text-lg font-bold">₹{event.price}</div>
+                  {selectedEvents[event.event_id]?.selected ? (
+                    <ChevronUp className="w-6 h-6 text-[#d4d4d4]" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6 text-[#d4d4d4]" />
+                  )}
+                </div>
               </div>
-              {selectedEvents.includes(event.event_id) && (
-                <div className="mt-4 bg-[#1C1C1C] p-4 rounded-lg">
-                  <h3 className="text-md font-semibold text-white">Team Members</h3>
+              {selectedEvents[event.event_id]?.selected && (
+                <div className="p-4 border-t border-[#333333]">
                   <div className="space-y-4">
-                    {members[event.event_id]?.map((member, index) => (
-                      <div key={index} className="flex space-x-2 items-center">
-                        <input
-                          type="text"
-                          placeholder="Name"
-                          value={member.name}
-                          onChange={(e) => handleMemberChange(event.event_id, index, "name", e.target.value)}
-                          className="p-2 rounded-md bg-[#3E3E3E] text-white"
-                          required
-                        />
-                        <input
-                          type="email"
-                          placeholder="Email"
-                          value={member.email}
-                          onChange={(e) => handleMemberChange(event.event_id, index, "email", e.target.value)}
-                          className="p-2 rounded-md bg-[#3E3E3E] text-white"
-                          required
-                        />
-                        <Button
-                          variant="destructive"
-                          onClick={() => handleDeleteMember(event.event_id, index)}
-                        >
-                          Remove
-                        </Button>
+                    {selectedEvents[event.event_id].members.map((member, index) => (
+                      <div key={index} className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 sm:items-center">
+                        <div className="flex-1">
+                          <input
+                            type="text"
+                            placeholder={`Member ${index + 1} Name`}
+                            value={member.name}
+                            onChange={(e) =>
+                              handleMemberInput(event.event_id, index, "name", e.target.value)
+                            }
+                            className="w-full p-2 bg-[#333333] text-white rounded"
+                            required
+                          />
+                        </div>
+                        <div className="flex-1 flex space-x-2">
+                          <input
+                            type="email"
+                            placeholder={`Member ${index + 1} Email`}
+                            value={member.email}
+                            onChange={(e) =>
+                              handleMemberInput(event.event_id, index, "email", e.target.value)
+                            }
+                            className="flex-1 p-2 bg-[#333333] text-white rounded"
+                            required
+                          />
+                          <Button
+                            onClick={() => handleRemoveMember(event.event_id, index)}
+                            className="bg-[#ff4d4f] text-white hover:bg-[#ff7875] transition-colors flex-shrink-0"
+                            size="icon"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </div>
                     ))}
-                    <Button onClick={() => handleAddMember(event.event_id)}>Add Member</Button>
                   </div>
+                  <Button
+                    onClick={() => handleAddMember(event.event_id)}
+                    className="mt-4 bg-[#444444] text-white hover:bg-[#555555] transition-colors"
+                    disabled={selectedEvents[event.event_id].members.length >= (EVENTS.find(e => e.event_id === event.event_id)?.max_members || Infinity)}
+                  >
+                    <Plus className="w-4 h-4 mr-2" /> Add Member
+                  </Button>
                 </div>
               )}
             </div>
           ))}
         </div>
-        <Button onClick={handleSubmit} className="mt-8 w-full" disabled={loading}>
-          {loading ? "Processing..." : "Proceed to Payment"}
+        <Button
+          className="mt-8 w-full bg-[#aef737] text-[#1A1A1A] hover:bg-[#8ed626] transition-colors"
+          disabled={loading}
+          onClick={handleSubmit}
+        >
+          {loading ? "Submitting..." : "Register for Selected Events"}
         </Button>
       </div>
     </>

@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen relative px-4 md:px-0">
+    <div className="flex flex-col justify-center items-center min-h-screen relative overflow-x-hidden">
       {/* Profile Image */}
       <div className="absolute top-4 right-2 z-50">
         <Link href="/profile">

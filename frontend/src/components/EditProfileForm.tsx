@@ -15,23 +15,25 @@ export default function RegisterForm() {
   const [link, setLink] = useState("")
   const [interests, setInterests] = useState([])
   const [loading, setLoading] = useState(false)
+  const [testLoad,setTestLoad] = useState(true)
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await fetch("http://localhost:8079/check-auth", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
           credentials: "include",
         });
         if (res.status === 200) {
           const data = await res.json();
           console.log(data.user);
           const user = data.user;
+          setTestLoad(false)
         } else {
           console.log("failed");
-          router.push("/register");
+          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
         }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        router.push("/register");
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
       }
     };
     
@@ -47,7 +49,7 @@ export default function RegisterForm() {
       interests,
     }
     try {
-      const response = await fetch("http://localhost:8079/socials_upd", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/socials_upd`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -73,6 +75,8 @@ export default function RegisterForm() {
       setLoading(false)
     }
     }
+    if(testLoad) return (<></>)
+      else {
   return (
     <div className="max-w-2xl mx-auto md:pt-5 pt-10">
       <div className="fixed top-0 left-0 border-white/10 bg-background z-50 w-full p-5 py-7 border-b">
@@ -158,5 +162,5 @@ export default function RegisterForm() {
         </div>
       </form>
     </div>
-  )
+  ) }
 }
