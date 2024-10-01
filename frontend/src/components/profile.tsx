@@ -133,7 +133,7 @@ export default function ProfilePage() {
                         <div className="mt-8 flex flex-col items-center">
                             <h2 className="text-lg font-semibold text-[#b4ff39] mb-4">Connect with Me</h2>
                             <div className="flex space-x-4">
-                                <Link href={`https://www.github.com/in/${profile.git}`} target="_blank" rel="noopener noreferrer">
+                                <Link href={`https://www.github.com/${profile.git}`} target="_blank" rel="noopener noreferrer">
                                     <Button className="flex items-center space-x-2 bg-[#2A2A2A] hover:bg-[#3A3A3A] text-white">
                                         <Github className="h-5 w-5" />
                                         <span>GitHub</span>
