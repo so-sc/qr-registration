@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import SkeletonLoader from "@/app/register/loading";
 import test from "node:test"
 export default function RegisterForm() {
   const router=useRouter();
@@ -91,7 +92,7 @@ export default function RegisterForm() {
       setLoading(false)
     }
     }
-    if(testLoad) return (<></>)
+    if(testLoad) return (<SkeletonLoader/>)
     else 
   return (
     <div className="max-w-2xl mx-auto md:pt-5 pt-10">
