@@ -27,20 +27,26 @@ export default function ProfilePage() {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
 
     useEffect(() => {
-        // Dummy data to test profile page without auth check
-        const dummyProfileData: ProfileData = {
-            username: "John Doe",
-            college: "Sample College",
-            phone: "123-456-7890",
-            email: "john.doe@example.com",
-            year: "3rd Year",
-            branch: "Computer Science",
-            insta: "johndoe_ig",
-            portf: "johndoe.com",
-            ldn: "john-doe-linkedin",
-            git: "johndoe-github",
-        };
-        setProfileData(dummyProfileData);
+        const getUserData = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
+                    credentials: "include",
+                });
+                if (res.status === 200) {
+                    const data = await res.json();
+                    const resData: ProfileData = data.user;
+                    setProfileData(resData);
+                } else {
+                    console.log("failed");
+                    window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+                }
+            } catch (error) {
+                console.error("Failed to fetch user details:", error);
+                window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+        }
+        
+        getUserData(); }
+        
     }, []);
 
     if (!profileData) {
