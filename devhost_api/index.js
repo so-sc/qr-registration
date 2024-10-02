@@ -133,7 +133,7 @@ app.get('/viewprofile', async (req, res) => {
 
     const resbody = {
         message: "gotcha",
-        name: user.username,
+        username: user.username,
         college: user.college,
         phone: user.phone,
         email: user.email,
@@ -144,6 +144,9 @@ app.get('/viewprofile', async (req, res) => {
         portf: user.portf,
         git: user.git,
         insta: user.insta,
+        events: user.events,
+        interests: user.interests,
+        gId:user.gID
     };
 
     console.log(resbody);

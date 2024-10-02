@@ -53,7 +53,7 @@ export default function ProfilePage() {
                     const resData: ProfileData = data.user;
                     console.log("res"+resData)
                     setProfileData(resData);
-                    QRCode.toDataURL(`${process.env.NEXT_PUBLIC_FRONTHOST}/viewuser?gid?=${data.user.gID}`)
+                    QRCode.toDataURL(`${process.env.NEXT_PUBLIC_FRONTHOST}/viewuser?gid=${data.user.gID}`)
                     .then(url => {
                         setqrUrl(url);
                     })
