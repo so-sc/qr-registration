@@ -29,12 +29,12 @@ export default function RegisterForm() {
         });
         if (res.status === 200) {
           const data = await res.json();
-          setTestLoad(false)
           console.log(data.user);
           const user = data.user;
           if(user.college){
           window.location.replace("events");
           }
+          setTestLoad(false)
           setName(user.username);
           setEmail(user.email);
         } else {
