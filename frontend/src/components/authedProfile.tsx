@@ -9,7 +9,7 @@ import { ArrowLeft, Edit2, Mail, Phone, School, Calendar, LucideIcon, Github, Li
 import dynamic from "next/dynamic";
 import SkeletonLoader from "@/app/profile/loading";
 const CursorTrailCanvas = dynamic(() => import('@/components/CursorTrailCanvas'), { ssr: false });
-
+type EventMap = Record<string, string>;
 interface ProfileData {
     username: string;
     college: string;
@@ -24,7 +24,18 @@ interface ProfileData {
     interests:[string];
     events:[string];
 }
-
+const evn:EventMap ={
+    "101": "CSS action",
+    "102": "Competitive Programming",
+    "103": "Capture the Flag",
+    "104": "Blind Coding",
+    "105": "Tech-Pitch",
+    "106": "BGMI: Battlegrounds Mobile India",
+    "107": "Rubix Cube",
+    "108": "Speed Typing",
+    "109": "Valorant"
+  }
+  
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
 
@@ -55,7 +66,9 @@ export default function ProfilePage() {
     if (!profileData) {
         return <SkeletonLoader />;
     }
-
+    const evNames = (events: string[]) => {
+        return events.map(ev => evn[ev] || "Unknown Event");
+    };  
     const profile = {
         name: profileData.username,
         image: "/events/profile.jpg",
@@ -68,11 +81,10 @@ export default function ProfilePage() {
         git: profileData.git,
         insta: profileData.insta,
         portf: profileData.portf,
-        eventsRegistered: profileData.events, 
+        eventsRegistered: evNames(profileData.events), 
         talksRegistered: [],  
         interests: profileData.interests,        
-    };
-
+    };  
     const noSelectionText = "No selections have been made";
 
     return (
