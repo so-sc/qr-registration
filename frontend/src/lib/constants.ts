@@ -245,6 +245,8 @@ export const EVENTS = [
     type: "event",
     event_id: "101",
     price: 100,
+    min_members: 1,
+    max_members: 2,
   },
   {
     name: "Competitive Programming",
@@ -255,6 +257,8 @@ export const EVENTS = [
     type: "event",
     event_id: "102",
     price: 100,
+    min_members: 1,
+    max_members: 2,
   },
   {
     name: "Capture the Flag",
@@ -265,9 +269,11 @@ export const EVENTS = [
     type: "event",
     event_id: "103",
     price: 100,
+    min_members: 2,
+    max_members: 2,
   },
   {
-    name: "Blind Coding",
+    name: "Sightless Synatax",
     organizer: "Rithuparna K.S",
     description: "Solve coding problems without external tools. Can you prove your skills?",
     date: "8th Nov",
@@ -275,6 +281,8 @@ export const EVENTS = [
     type: "event",
     event_id: "104",
     price: 100,
+    min_members: 2,
+    max_members: 2,
   },
   {
     name: "Tech-Pitch",
@@ -285,6 +293,8 @@ export const EVENTS = [
     type: "event",
     event_id: "105",
     price: 100,
+    min_members: 2,
+    max_members: 4,
   },
   {
     name: "BGMI: Battlegrounds Mobile India",
@@ -294,7 +304,9 @@ export const EVENTS = [
     time: "2:00pm - 4:00pm",
     type: "event",
     event_id: "106",
-    price: 100,
+    price: 500,
+    min_members: 4,
+    max_members: 4,
   },
   {
     name: "Valorant",
@@ -304,7 +316,9 @@ export const EVENTS = [
     time: "2:15pm - 4:30pm",
     type: "event",
     event_id: "107",
-    price: 100,
+    price: 500,
+    min_members: 5,
+    max_members: 5,
   },
   // {
   //   name: "Rubix Cube",
