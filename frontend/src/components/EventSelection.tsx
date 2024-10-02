@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
 import Link from "next/link";
+import SkeletonLoader from "@/app/events/loading";
 import { ArrowLeft, User, Check, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import Script from "next/script";
 
@@ -56,17 +57,17 @@ export default function EventSelection() {
           setTestLoad(false)
         } else {
           console.log("failed");
-          // window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
         }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        // window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
       }
-      setTestLoad(false)//remove later
     };
     
     getUserData();
   }, []);
+  if(testLoad) return(<SkeletonLoader/>)
   const validateMembers = (members: Member[]): { isValid: boolean; error?: string } => {
     for (const member of members) {
       if (!member.name.trim()) {
