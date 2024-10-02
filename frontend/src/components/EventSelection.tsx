@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
@@ -40,12 +40,32 @@ declare global {
 export default function EventSelection() {
   const [selectedEvents, setSelectedEvents] = useState<SelectedEvents>({});
   const [loading, setLoading] = useState(false);
-
+  const [testLoad, setTestLoad] = useState(true);
   const isValidEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
+          credentials: "include",
+        });
+        if (res.status === 200) {
+          const data = await res.json();
+          setTestLoad(false)
+        } else {
+          console.log("failed");
+          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+      }
+    };
+    
+    getUserData();
+  }, []);
   const validateMembers = (members: Member[]): { isValid: boolean; error?: string } => {
     for (const member of members) {
       if (!member.name.trim()) {
@@ -154,7 +174,7 @@ export default function EventSelection() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8079/createOrder", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -206,7 +226,7 @@ export default function EventSelection() {
 
   const verifyPayment = async (response: any, events: string[]) => {
     try {
-      const verificationResponse = await fetch("http://localhost:8079/verPayment", {
+      const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -230,7 +250,7 @@ export default function EventSelection() {
       toast.error("Error verifying payment");
     }
   };
-
+  if(testLoad) return (<></>)
   return (
     <>
       <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
