@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
-
+const eventSchema = new mongoose.Schema({
+    evname:{type:String},
+    evteam:[String]
+});
 const userSchema = new mongoose.Schema({
     gID: { type: String, required: true, unique: true },
     username: { type: String, default: "John Doe" },
@@ -14,7 +17,9 @@ const userSchema = new mongoose.Schema({
     portf:{type: String},
     insta:{type: String},
     college:{type: String},
-    events:[String]
+    events:[String],
+    interests:[String],
+    eventDet:[[eventSchema]]
 });
 
 const User = mongoose.model('User', userSchema);

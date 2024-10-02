@@ -21,6 +21,8 @@ interface ProfileData {
     portf: string;
     ldn: string;
     git: string;
+    interests:[string];
+    events:[string];
 }
 
 export default function ProfilePage() {
@@ -66,9 +68,9 @@ export default function ProfilePage() {
         git: profileData.git,
         insta: profileData.insta,
         portf: profileData.portf,
-        eventsRegistered: [], 
+        eventsRegistered: profileData.events, 
         talksRegistered: [],  
-        interests: [],        
+        interests: profileData.interests,        
     };
 
     const noSelectionText = "No selections have been made";
@@ -137,7 +139,7 @@ export default function ProfilePage() {
                         <div className="mt-8 flex flex-col items-center">
                             <h2 className="text-lg font-semibold text-[#b4ff39] mb-4">Connect with Me</h2>
                             <div className="flex space-x-4">
-                                <Link href={`https://www.github.com/in/${profile.git}`} target="_blank" rel="noopener noreferrer">
+                                <Link href={`https://www.github.com/${profile.git}`} target="_blank" rel="noopener noreferrer">
                                     <Button className="flex items-center space-x-2 bg-[#2A2A2A] hover:bg-[#3A3A3A] text-white md:flex-row flex-col md:space-x-2">
                                         <Github className="h-5 w-5" />
                                         <span className="hidden md:inline">GitHub</span>
