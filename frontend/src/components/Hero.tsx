@@ -5,22 +5,23 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import { User as UserIcon } from "lucide-react"; 
 
 export default function Hero() {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen relative overflow-x-hidden">
-      {/* Profile Image */}
-      <div className="absolute top-4 right-2 z-50">
-        <Link href="/profile">
-          <Image
-            src="/events/profile.jpg"
-            alt="Profile"
-            width={50}
-            height={50}
-            className="rounded-full border-2 border-neon-green cursor-pointer"
-          />
+      {/* Profile Icon */}
+      <div className="absolute top-4 right-4 z-50"> 
+        <Link href="/profile" className="cursor-pointer">
+          <HoverBorderGradient
+            containerClassName="rounded-full"
+            as="button"
+            className="bg-background p-1 flex items-center justify-center space-x-2 md:p-2" >
+            <UserIcon className="text-neon-green w-7 h-7 md:w-8 md:h-8" /> 
+          </HoverBorderGradient>
         </Link>
       </div>
+
 
       <motion.div
         initial={{ y: -10, opacity: 0, filter: "blur(5px)" }}
