@@ -71,7 +71,7 @@ export default function RegisterForm() {
       setInsta("");
       setGit("");
       setInterests([]);
-      router.push("/events");
+      router.push("/profile");
     } catch (error) {
       console.error("Error updating details:", error);
       toast.error("Failed to update details", {
