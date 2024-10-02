@@ -1,6 +1,5 @@
 import { ArrowLeft } from "lucide-react";
 
-// SkeletonLoader component to show placeholders while data is loading
 export default function SkeletonLoader() {
     return (
         <div className="min-h-screen bg-[#1E1E1E] text-white">

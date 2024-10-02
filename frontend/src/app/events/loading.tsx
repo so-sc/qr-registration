@@ -1,4 +1,3 @@
-// app/loading.tsx
 import React from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -11,39 +10,31 @@ export default function Loading() {
           <Skeleton 
             width={160} 
             height={16} 
-            baseColor="#374151" 
-            highlightColor="#4B5563"
+            baseColor="#2D2D2D"  
+            highlightColor="#474747" 
           />
         </div>
       </div>
 
       <div className="space-y-6 p-5">
-        <Skeleton 
-          height={200} 
-          className="w-full rounded-2xl" 
-          baseColor="#374151" 
-          highlightColor="#4B5563"
-        />
-        
         <div className="space-y-2 md:py-5 py-5 text-center">
           <Skeleton 
             width="75%" 
             height={32} 
             className="mx-auto" 
-            baseColor="#374151" 
-            highlightColor="#4B5563"
+            baseColor="#2D2D2D" 
+            highlightColor="#474747"
           />
           <Skeleton 
             width="60%" 
             height={20} 
             className="mx-auto mt-2" 
-            baseColor="#374151" 
-            highlightColor="#4B5563"
+            baseColor="#2D2D2D" 
+            highlightColor="#474747"
           />
         </div>
 
         <div className="space-y-4 pb-10">
-          {/* Form fields with lighter colors */}
           {[
             { label: 'Name', width: 60 },
             { label: 'Email', width: 60 },
@@ -56,24 +47,23 @@ export default function Loading() {
               <Skeleton 
                 width={field.width} 
                 height={16} 
-                baseColor="#374151" 
-                highlightColor="#4B5563"
+                baseColor="#2D2D2D" 
+                highlightColor="#474747"
               />
               <Skeleton 
                 height={40} 
                 className="w-full" 
-                baseColor="#D1D5DB" 
-                highlightColor="#E5E7EB"
+                baseColor="#B0B0B0"  
+                highlightColor="#C5C5C5"
               />
             </div>
           ))}
 
-          {/* Submit button */}
           <Skeleton 
             height={40} 
             className="w-full mt-4" 
-            baseColor="#D1D5DB" 
-            highlightColor="#E5E7EB"
+            baseColor="#B0B0B0" 
+            highlightColor="#C5C5C5"
           />
         </div>
       </div>
