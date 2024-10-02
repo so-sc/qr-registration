@@ -329,10 +329,11 @@ export default function EventSelection() {
                 </div>
               </div>
               {selectedEvents[event.event_id]?.selected && (
-                <div className="p-4 border-t border-[#333333]">
-                  <div className="space-y-4">
-                    {selectedEvents[event.event_id].members.map((member, index) => (
-                      <div key={index} className="flex flex-col sm:flex-row sm:space-x-2 space-y-2 sm:space-y-0 sm:items-center">
+              <div className="p-4 border-t border-[#333333]">
+                <div className="space-y-4">
+                  {selectedEvents[event.event_id].members.map((member, index) => (
+                    <div key={index} className="sm:flex sm:space-x-2">
+                      <div className="flex-1 space-y-2 sm:space-y-0 sm:flex sm:space-x-2">
                         <div className="flex-1">
                           <input
                             type="text"
@@ -345,7 +346,7 @@ export default function EventSelection() {
                             required
                           />
                         </div>
-                        <div className="flex-1 flex space-x-2">
+                        <div className="flex-1">
                           <input
                             type="email"
                             placeholder={`Member ${index + 1} Email`}
@@ -353,29 +354,30 @@ export default function EventSelection() {
                             onChange={(e) =>
                               handleMemberInput(event.event_id, index, "email", e.target.value)
                             }
-                            className="flex-1 p-2 bg-[#333333] text-white rounded"
+                            className="w-full p-2 bg-[#333333] text-white rounded"
                             required
                           />
-                          <Button
-                            onClick={() => handleRemoveMember(event.event_id, index)}
-                            className="bg-[#ff4d4f] text-white hover:bg-[#ff7875] transition-colors flex-shrink-0"
-                            size="icon"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                  <Button
-                    onClick={() => handleAddMember(event.event_id)}
-                    className="mt-4 bg-[#444444] text-white hover:bg-[#555555] transition-colors"
-                    disabled={selectedEvents[event.event_id].members.length >= (EVENTS.find(e => e.event_id === event.event_id)?.max_members || Infinity)}
-                  >
-                    <Plus className="w-4 h-4 mr-2" /> Add Member
-                  </Button>
+                      <Button
+                        onClick={() => handleRemoveMember(event.event_id, index)}
+                        className="w-full mt-2 sm:mt-0 sm:w-16 h-10 bg-[#ff4d4f] text-white hover:bg-[#ff7875] transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4 hidden sm:block" />
+                        <span className="sm:hidden">Remove Member</span>
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-              )}
+                <Button
+                  onClick={() => handleAddMember(event.event_id)}
+                  className="mt-4 bg-[#444444] text-white hover:bg-[#555555] transition-colors"
+                  disabled={selectedEvents[event.event_id].members.length >= (EVENTS.find(e => e.event_id === event.event_id)?.max_members || Infinity)}
+                >
+                  <Plus className="w-4 h-4 mr-2" /> Add Member
+                </Button>
+              </div>
+            )}
             </div>
           ))}
         </div>

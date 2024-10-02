@@ -4,9 +4,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import Link from "next/link";
+import SkeletonLoader from "@/app/edit/loading"; 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Instagram, Github, Linkedin, Globe } from "lucide-react";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -27,7 +29,6 @@ export default function RegisterForm() {
         if (res.status === 200) {
           const data = await res.json();
           console.log(data.user);
-          const user = data.user;
           setTestLoad(false);
         } else {
           console.log("failed");
@@ -44,7 +45,7 @@ export default function RegisterForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true on submit
+    setLoading(true);
     const userDetails = {
       insta,
       git,
@@ -77,11 +78,11 @@ export default function RegisterForm() {
         description: "Please try again later.",
       });
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
-  if (testLoad) return <></>;
+  if (testLoad) return <SkeletonLoader />;
   else {
     return (
       <div className="max-w-2xl mx-auto md:pt-5 pt-10">
@@ -101,21 +102,17 @@ export default function RegisterForm() {
         </div>
 
         <form className="space-y-6 p-5" onSubmit={handleSubmit}>
-          <img
-            className="w-full rounded-2xl"
-            src="/cover.png"
-            alt="cover"
-            width={500}
-            height={500}
-          />
-          <div className="space-y-2 md:py-5 py-5 text-center">
-            <h1 className="md:text-3xl text-2xl font-bold">Edit Details</h1>
+          <div className="space-y-2 md:py-8 py-8 text-center">
+            <h1 className="md:text-3xl text-2xl font-bold mt-4">Edit Details</h1>
             <p className="text-gray-400 dark:text-gray-500 md:text-base text-sm tracking-wide">
               Enter your social media handles and fields of Interest
             </p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="name">LinkedIn Handle</Label>
+            <Label htmlFor="link" className="flex items-center space-x-2">
+              <Linkedin className="h-5 w-5 text-blue-600" />
+              <span>LinkedIn Handle</span>
+            </Label>
             <Input
               id="link"
               disabled={loading}
@@ -126,29 +123,38 @@ export default function RegisterForm() {
           </div>
           <div className="space-y-4 pb-10">
             <div className="space-y-2">
-              <Label htmlFor="name">Instagram Handle</Label>
+              <Label htmlFor="insta" className="flex items-center space-x-2">
+                <Instagram className="h-5 w-5 text-pink-500" />
+                <span>Instagram Handle</span>
+              </Label>
               <Input
                 id="insta"
                 disabled={loading}
                 value={insta}
                 onChange={(e) => setInsta(e.target.value)}
-                placeholder="Enter your instagram username"
+                placeholder="Enter your Instagram username"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="git">Github Handle</Label>
+              <Label htmlFor="git" className="flex items-center space-x-2">
+                <Github className="h-5 w-5 text-white" />
+                <span>Github Handle</span>
+              </Label>
               <Input
                 id="git"
                 disabled={loading}
                 value={git}
                 onChange={(e) => setGit(e.target.value)}
                 type="text"
-                placeholder="Enter your github username"
+                placeholder="Enter your GitHub username"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="red">Portfolio Website</Label>
+              <Label htmlFor="red" className="flex items-center space-x-2">
+                <Globe className="h-5 w-5 text-green-600" />
+                <span>Portfolio Website</span>
+              </Label>
               <Input
                 id="red"
                 disabled={loading}
@@ -168,7 +174,7 @@ export default function RegisterForm() {
               </Button>
               {loading && (
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="loader"></div> {/* Loader */}
+                  <div className="loader"></div>
                 </div>
               )}
             </div>
