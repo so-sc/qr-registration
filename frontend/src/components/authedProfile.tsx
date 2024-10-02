@@ -35,6 +35,7 @@ export default function ProfilePage() {
                 if (res.status === 200) {
                     const data = await res.json();
                     const resData: ProfileData = data.user;
+                    console.log("res"+resData)
                     setProfileData(resData);
                 } else {
                     console.log("failed");
@@ -44,9 +45,9 @@ export default function ProfilePage() {
                 console.error("Failed to fetch user details:", error);
                 window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
         }
-        
-        getUserData(); }
-        
+    }
+        getUserData(); 
+
     }, []);
 
     if (!profileData) {
