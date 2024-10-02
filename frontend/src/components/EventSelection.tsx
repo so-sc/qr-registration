@@ -260,6 +260,9 @@ export default function EventSelection() {
     } catch (error) {
       toast.error("Error verifying payment");
     }
+    finally{
+      window.location.replace(`${process.env.NEXT_PUBLIC_FRONTHOST}/profile`)
+    }
   };
   if(testLoad) return (<></>)
   return (
