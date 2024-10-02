@@ -21,7 +21,7 @@ interface ProfileData {
     ldn:string;
     git:string;
     message:string;
-    events:string[]; // Changed to string[] for direct mapping
+    events:string[];
 }
 
 const ProfilePage = () => {
@@ -32,16 +32,14 @@ const ProfilePage = () => {
         try {
             const urlParams = new URLSearchParams(window.location.search);
             const gid = urlParams.get('gid');
-            const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/viewprofile?gid=${gid}`,{
+            const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/viewprofile?gid=${gid}`, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
             const resData: ProfileData = await res.json();
-            console.log({resData,res})
             setProfileData(resData);
             if (res.status === 200) {
-                console.log("fetched",resData);
                 setLoading(false);
             } else {
                 console.log("Fetch Failed");
@@ -52,6 +50,7 @@ const ProfilePage = () => {
     };
 
     useEffect(() => {
+        // Dummy data for initial rendering
         setProfileData({
             name: "John Doe",
             college: "ABC College",
@@ -118,10 +117,14 @@ const ProfilePage = () => {
                                             className="rounded-full object-cover border-2 border-[#b4ff39]"
                                         />
                                     </div>
-                                    <div>
+                                    <div className="flex-1">
                                         <h1 className="text-2xl font-bold text-[#b4ff39]">{profile.name}</h1>
-                                        <p className="mt-1 text-gray-300">{profile.college} - {profile.branch}</p>
+                                        <p className="mt-1 text-gray-300">{profile.college}</p>
                                     </div>
+                                </div>
+                                {/* QR Code Placeholder */}
+                                <div className="flex-shrink-0 ml-auto w-24 h-24 bg-gray-800 border-2 border-[#b4ff39] rounded-lg flex items-center justify-center">
+                                    <span className="text-gray-400">QR Code</span>
                                 </div>
                             </div>
 
@@ -192,12 +195,12 @@ function ProfileItem({ icon: Icon, title, value }: { icon: LucideIcon; title: st
 
 function ProfileList({ title, items }: { title: string; items: string[] }) {
     return (
-        <div className="bg-[#2A2A2A] border border-gray-600 rounded-lg p-4">
-            <h3 className="text-md font-bold text-[#b4ff39]">{title}</h3>
-            <ul className="mt-2">
+        <div className="bg-[#2A2A2A] p-4 rounded-lg">
+            <h3 className="text-sm font-medium text-[#b4ff39]">{title}</h3>
+            <ul className="mt-2 space-y-1">
                 {items.map((item, index) => (
-                    <li key={index} className="text-gray-300">
-                        - {item}
+                    <li key={index} className="text-sm text-gray-300">
+                        • {item}
                     </li>
                 ))}
             </ul>
