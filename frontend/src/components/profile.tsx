@@ -136,7 +136,6 @@ const ProfilePage = () => {
                                     <ProfileItem icon={Calendar} title="Year of Study" value={profile.year} />
                                 </dl>
                             </div>
-
                             <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                                 <ProfileList title="Events Registered" items={profile.eventsRegistered.length ? profile.eventsRegistered : ["No events selected"]} />
                                 <ProfileList title="Talks Registered" items={profile.talksRegistered.length ? profile.talksRegistered : ["No events selected"]} />
