@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
+const memberSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true }
+});
 const eventSchema = new mongoose.Schema({
-    evname:{type:String},
-    evteam:[String]
+    event_id: { type: String, required: true },
+    members: [memberSchema]
 });
 const userSchema = new mongoose.Schema({
     gID: { type: String, required: true, unique: true },
@@ -19,7 +23,7 @@ const userSchema = new mongoose.Schema({
     college:{type: String},
     events:[String],
     interests:[String],
-    eventDet:[[eventSchema]]
+    eventDet:[eventSchema]
 });
 
 const User = mongoose.model('User', userSchema);

@@ -56,12 +56,13 @@ export default function EventSelection() {
           setTestLoad(false)
         } else {
           console.log("failed");
-          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+          // window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
         }
       } catch (error) {
         console.error("Failed to fetch user details:", error);
-        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+        // window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
       }
+      setTestLoad(false)//remove later
     };
     
     getUserData();
@@ -172,7 +173,11 @@ export default function EventSelection() {
   
 
     setLoading(true);
-
+    const eventsWithMembers = selectedEventIds.map((eid) => ({
+      event_id: eid,
+      members: selectedEvents[eid].members,
+    }));
+    console.log(eventsWithMembers,selectedEventIds)
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
         method: "POST",
@@ -199,7 +204,7 @@ export default function EventSelection() {
             description: "Fee for selected events",
             order_id: orderData.id,
             handler: function (response: any) {
-              verifyPayment(response, selectedEventIds);
+              verifyPayment(response, eventsWithMembers);
             },
             prefill: {
               name: "John Doe",
@@ -224,7 +229,7 @@ export default function EventSelection() {
     }
   };
 
-  const verifyPayment = async (response: any, events: string[]) => {
+  const verifyPayment = async (response: any, eventsDet: { event_id: string; members: Member[] }[]) => {
     try {
       const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
         method: "POST",
@@ -236,7 +241,7 @@ export default function EventSelection() {
           payment_id: response.razorpay_payment_id,
           order_id: response.razorpay_order_id,
           signature: response.razorpay_signature,
-          events,
+          eventsDet,
         }),
       });
 

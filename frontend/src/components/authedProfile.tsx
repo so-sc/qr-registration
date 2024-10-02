@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useEffect, useState } from "react";
+import QRCode from 'qrcode';
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,6 +14,7 @@ type EventMap = Record<string, string>;
 interface ProfileData {
     username: string;
     college: string;
+    gID:string;
     phone: string;
     email: string;
     year: string;
@@ -38,6 +40,7 @@ const evn:EventMap ={
   
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
+    const [qrUrl,setqrUrl] = useState<string>('');
 
     useEffect(() => {
         const getUserData = async () => {
@@ -50,6 +53,10 @@ export default function ProfilePage() {
                     const resData: ProfileData = data.user;
                     console.log("res"+resData)
                     setProfileData(resData);
+                    QRCode.toDataURL(`${process.env.NEXT_PUBLIC_FRONTHOST}/viewuser?gid?=${data.user.gID}`)
+                    .then(url => {
+                        setqrUrl(url);
+                    })
                 } else {
                     console.log("failed");
                     window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
@@ -78,6 +85,7 @@ export default function ProfilePage() {
         branch: profileData.branch,
         year: profileData.year,
         ldn: profileData.ldn,
+        gid: profileData.gID,
         git: profileData.git,
         insta: profileData.insta,
         portf: profileData.portf,
@@ -86,7 +94,6 @@ export default function ProfilePage() {
         interests: profileData.interests,        
     };  
     const noSelectionText = "No selections have been made";
-
     return (
         <div className="min-h-screen bg-[#1E1E1E] text-white relative">
             <CursorTrailCanvas className="pointer-events-none z-50 md:flex hidden fixed inset-0 h-full w-full" />
@@ -128,7 +135,7 @@ export default function ProfilePage() {
                             {/* QR Code Placeholder */}
                             <div className="absolute right-4 top-4 flex-shrink-0 flex items-center">
                                 <div className="w-28 h-28 sm:w-24 sm:h-24 bg-gray-300 rounded-md flex items-center justify-center"> {/* Increased size for mobile view */}
-                                    <span className="text-gray-400">QR Code</span>
+                                {qrUrl && <img src={qrUrl} alt="QR Code" className="rounded-lg"/>}
                                 </div>
                             </div>
                         </div>
