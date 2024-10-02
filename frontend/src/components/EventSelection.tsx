@@ -8,7 +8,6 @@ import Link from "next/link";
 import SkeletonLoader from "@/app/events/loading";
 import { ArrowLeft, User, Check, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import Script from "next/script";
-
 interface Event {
   event_id: string;
   name: string;
@@ -40,6 +39,7 @@ declare global {
 
 export default function EventSelection() {
   const [selectedEvents, setSelectedEvents] = useState<SelectedEvents>({});
+  const [regEvents, setregEvents] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [testLoad, setTestLoad] = useState(true);
   const isValidEmail = (email: string): boolean => {
@@ -54,6 +54,7 @@ export default function EventSelection() {
         });
         if (res.status === 200) {
           const data = await res.json();
+          setregEvents(data.user.events||[]);
           setTestLoad(false)
         } else {
           console.log("failed");
@@ -84,6 +85,10 @@ export default function EventSelection() {
   };
 
   const handleEventSelection = (eid: string) => {
+    if (regEvents.includes(eid)){
+      toast.error("You have already registered for this event");
+      return;
+    }
     setSelectedEvents((prev) => ({
       ...prev,
       [eid]: prev[eid]
@@ -286,7 +291,7 @@ export default function EventSelection() {
           {EVENTS.map((event: Event) => (
             <div
               key={event.event_id}
-              className="bg-[#222222] rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden"
+              className={`bg-[#222222] rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden ${regEvents.includes(event.event_id) ? "opacity-50 pointer-events-none" : ""}`}
             >
               <div
                 className="flex items-center justify-between p-4 cursor-pointer"
