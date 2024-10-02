@@ -65,7 +65,7 @@ app.get('/auth/failed', (req, res) => {
 app.get('/logout', function (req, res, next) {
     req.logout(function (err) {
         if (err) { return next(err); }
-        res.redirect('/');
+        return res.status(200).json({logout: "success"});
     });
 });
 
