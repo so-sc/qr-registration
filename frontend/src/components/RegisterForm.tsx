@@ -35,7 +35,8 @@ export default function RegisterForm() {
           if(user.college){
           window.location.replace("events");
           }
-          setTestLoad(false)
+          else
+          {setTestLoad(false)}
           setName(user.username);
           setEmail(user.email);
         } else {
@@ -49,7 +50,7 @@ export default function RegisterForm() {
     };
     
     getUserData();
-  }, [router]);
+  }, []);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const userDetails = {
