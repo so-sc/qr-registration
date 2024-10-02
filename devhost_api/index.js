@@ -98,12 +98,12 @@ app.post('/socials_upd', isLoggedIn, (req, res) => {
 
 app.post('/verPayment', isLoggedIn, (req, res) => {
     console.log(req.user);
-    const { payment_id, order_id, signature, events } = req.body;
+    const { payment_id, order_id, signature, eventsDet } = req.body;
     const crypto = require('crypto');
     const eSig = crypto.createHmac('sha256', process.env.razorSecret).update(order_id + '|' + payment_id).digest('hex');
     console.log(eSig + " " + signature);
     if (eSig === signature) {
-        attachEvents(req.user, events);
+        attachEvents(req.user, eventsDet);
         res.status(200).json({ success: true, message: 'Payment verification successful' });
     } else {
         res.status(400).json({ success: false, message: 'Payment verification failed' });
@@ -133,7 +133,7 @@ app.get('/viewprofile', async (req, res) => {
 
     const resbody = {
         message: "gotcha",
-        name: user.username,
+        username: user.username,
         college: user.college,
         phone: user.phone,
         email: user.email,
@@ -144,6 +144,9 @@ app.get('/viewprofile', async (req, res) => {
         portf: user.portf,
         git: user.git,
         insta: user.insta,
+        events: user.events,
+        interests: user.interests,
+        gId:user.gID
     };
 
     console.log(resbody);
@@ -151,8 +154,11 @@ app.get('/viewprofile', async (req, res) => {
 });
 
 const attachEvents = async (luser, events) => {
+    console.log(events)
     const user = await User.findOne({ gID: luser.gID });
-    user.events = events.concat(user.events);
+    const eid = events.map(event => event.event_id);
+    user.events = [...new Set([...user.events, ...eid])];
+    user.eventDet.push(...events);
     await user.save();
     console.log(user);
 };

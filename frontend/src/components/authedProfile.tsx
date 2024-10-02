@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useEffect, useState } from "react";
+import QRCode from 'qrcode';
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,10 +10,11 @@ import { ArrowLeft, Edit2, Mail, Phone, School, Calendar, LucideIcon, Github, Li
 import dynamic from "next/dynamic";
 import SkeletonLoader from "@/app/profile/loading";
 const CursorTrailCanvas = dynamic(() => import('@/components/CursorTrailCanvas'), { ssr: false });
-
+type EventMap = Record<string, string>;
 interface ProfileData {
     username: string;
     college: string;
+    gID:string;
     phone: string;
     email: string;
     year: string;
@@ -21,32 +23,59 @@ interface ProfileData {
     portf: string;
     ldn: string;
     git: string;
+    interests:[string];
+    events:[string];
 }
-
+const evn:EventMap ={
+    "101": "CSS action",
+    "102": "Competitive Programming",
+    "103": "Capture the Flag",
+    "104": "Blind Coding",
+    "105": "Tech-Pitch",
+    "106": "BGMI: Battlegrounds Mobile India",
+    "107": "Rubix Cube",
+    "108": "Speed Typing",
+    "109": "Valorant"
+  }
+  
 export default function ProfilePage() {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
+    const [qrUrl,setqrUrl] = useState<string>('');
 
     useEffect(() => {
-        // Dummy data to test profile page without auth check
-        const dummyProfileData: ProfileData = {
-            username: "John Doe",
-            college: "Sample College",
-            phone: "123-456-7890",
-            email: "john.doe@example.com",
-            year: "3rd Year",
-            branch: "Computer Science",
-            insta: "johndoe_ig",
-            portf: "johndoe.com",
-            ldn: "john-doe-linkedin",
-            git: "johndoe-github",
-        };
-        setProfileData(dummyProfileData);
+        const getUserData = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
+                    credentials: "include",
+                });
+                if (res.status === 200) {
+                    const data = await res.json();
+                    const resData: ProfileData = data.user;
+                    console.log("res"+resData)
+                    setProfileData(resData);
+                    QRCode.toDataURL(`${process.env.NEXT_PUBLIC_FRONTHOST}/viewuser?gid=${data.user.gID}`)
+                    .then(url => {
+                        setqrUrl(url);
+                    })
+                } else {
+                    console.log("failed");
+                    window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+                }
+            } catch (error) {
+                console.error("Failed to fetch user details:", error);
+                window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+        }
+    }
+        getUserData(); 
+
     }, []);
 
     if (!profileData) {
         return <SkeletonLoader />;
     }
-
+    const evNames = (events: string[]) => {
+        return events.map(ev => evn[ev] || "Unknown Event");
+    };  
     const profile = {
         name: profileData.username,
         image: "/events/profile.jpg",
@@ -56,16 +85,15 @@ export default function ProfilePage() {
         branch: profileData.branch,
         year: profileData.year,
         ldn: profileData.ldn,
+        gid: profileData.gID,
         git: profileData.git,
         insta: profileData.insta,
         portf: profileData.portf,
-        eventsRegistered: [], 
+        eventsRegistered: evNames(profileData.events), 
         talksRegistered: [],  
-        interests: [],        
-    };
-
+        interests: profileData.interests,        
+    };  
     const noSelectionText = "No selections have been made";
-
     return (
         <div className="min-h-screen bg-[#1E1E1E] text-white relative">
             <CursorTrailCanvas className="pointer-events-none z-50 md:flex hidden fixed inset-0 h-full w-full" />
@@ -107,7 +135,7 @@ export default function ProfilePage() {
                             {/* QR Code Placeholder */}
                             <div className="absolute right-4 top-4 flex-shrink-0 flex items-center">
                                 <div className="w-28 h-28 sm:w-24 sm:h-24 bg-gray-300 rounded-md flex items-center justify-center"> {/* Increased size for mobile view */}
-                                    <span className="text-gray-400">QR Code</span>
+                                {qrUrl && <img src={qrUrl} alt="QR Code" className="rounded-lg"/>}
                                 </div>
                             </div>
                         </div>
@@ -130,7 +158,7 @@ export default function ProfilePage() {
                         <div className="mt-8 flex flex-col items-center">
                             <h2 className="text-lg font-semibold text-[#b4ff39] mb-4">Connect with Me</h2>
                             <div className="flex space-x-4">
-                                <Link href={`https://www.github.com/in/${profile.git}`} target="_blank" rel="noopener noreferrer">
+                                <Link href={`https://www.github.com/${profile.git}`} target="_blank" rel="noopener noreferrer">
                                     <Button className="flex items-center space-x-2 bg-[#2A2A2A] hover:bg-[#3A3A3A] text-white md:flex-row flex-col md:space-x-2">
                                         <Github className="h-5 w-5" />
                                         <span className="hidden md:inline">GitHub</span>

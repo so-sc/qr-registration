@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EVENTS } from "@/lib/constants";
 import { toast } from "sonner";
 import Link from "next/link";
+import SkeletonLoader from "@/app/events/loading";
 import { ArrowLeft, User, Check, ChevronDown, ChevronUp, Plus, Trash2 } from "lucide-react";
 import Script from "next/script";
 
@@ -40,12 +41,33 @@ declare global {
 export default function EventSelection() {
   const [selectedEvents, setSelectedEvents] = useState<SelectedEvents>({});
   const [loading, setLoading] = useState(false);
-
+  const [testLoad, setTestLoad] = useState(true);
   const isValidEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check-auth`, {
+          credentials: "include",
+        });
+        if (res.status === 200) {
+          const data = await res.json();
+          setTestLoad(false)
+        } else {
+          console.log("failed");
+          window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user details:", error);
+        window.location.replace(`${process.env.NEXT_PUBLIC_APIHOST}/auth/google`);
+      }
+    };
+    
+    getUserData();
+  }, []);
+  if(testLoad) return(<SkeletonLoader/>)
   const validateMembers = (members: Member[]): { isValid: boolean; error?: string } => {
     for (const member of members) {
       if (!member.name.trim()) {
@@ -152,9 +174,13 @@ export default function EventSelection() {
   
 
     setLoading(true);
-
+    const eventsWithMembers = selectedEventIds.map((eid) => ({
+      event_id: eid,
+      members: selectedEvents[eid].members,
+    }));
+    console.log(eventsWithMembers,selectedEventIds)
     try {
-      const response = await fetch("http://localhost:8079/createOrder", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/createOrder`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -179,7 +205,7 @@ export default function EventSelection() {
             description: "Fee for selected events",
             order_id: orderData.id,
             handler: function (response: any) {
-              verifyPayment(response, selectedEventIds);
+              verifyPayment(response, eventsWithMembers);
             },
             prefill: {
               name: "John Doe",
@@ -204,9 +230,9 @@ export default function EventSelection() {
     }
   };
 
-  const verifyPayment = async (response: any, events: string[]) => {
+  const verifyPayment = async (response: any, eventsDet: { event_id: string; members: Member[] }[]) => {
     try {
-      const verificationResponse = await fetch("http://localhost:8079/verPayment", {
+      const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/verPayment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -216,7 +242,7 @@ export default function EventSelection() {
           payment_id: response.razorpay_payment_id,
           order_id: response.razorpay_order_id,
           signature: response.razorpay_signature,
-          events,
+          eventsDet,
         }),
       });
 
@@ -230,7 +256,7 @@ export default function EventSelection() {
       toast.error("Error verifying payment");
     }
   };
-
+  if(testLoad) return (<></>)
   return (
     <>
       <Script id="razorpay-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" />
