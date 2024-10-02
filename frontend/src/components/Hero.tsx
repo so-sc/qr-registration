@@ -5,23 +5,23 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
-import { User as UserIcon } from "lucide-react"; 
+import { User as UserIcon } from "lucide-react";
 
 export default function Hero() {
   return (
     <div className="flex flex-col justify-center items-center min-h-screen relative overflow-x-hidden">
       {/* Profile Icon */}
-      <div className="absolute top-4 right-4 z-50"> 
+      <div className="absolute top-4 right-4 z-50">
         <Link href="/profile" className="cursor-pointer">
           <HoverBorderGradient
             containerClassName="rounded-full"
             as="button"
-            className="bg-background p-1 flex items-center justify-center space-x-2 md:p-2" >
-            <UserIcon className="text-neon-green w-7 h-7 md:w-8 md:h-8" /> 
+            className="bg-background p-1 flex items-center justify-center space-x-2 md:p-2"
+          >
+            <UserIcon className="text-neon-green w-7 h-7 md:w-8 md:h-8" />
           </HoverBorderGradient>
         </Link>
       </div>
-
 
       <motion.div
         initial={{ y: -10, opacity: 0, filter: "blur(5px)" }}
@@ -60,7 +60,9 @@ export default function Hero() {
                   height={500}
                 />
               </div>
-              <p className="pt-2 tracking-wide text-neon-green text-center">Presents</p>
+              <p className="pt-2 tracking-wide text-neon-green text-center">
+                Presents
+              </p>
             </div>
 
             {/* Main Logo Section */}
@@ -107,13 +109,14 @@ export default function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.1 }}
           >
-            {/* Main Button and Subtext Section */}
-            <div className="flex flex-col items-center gap-2 pb-20 md:pb-10 w-full">
-              <Link href="/register" className="flex justify-center w-full">
+            {/* Main Buttons Section */}
+            <div className="flex flex-col md:flex-row items-center gap-4 pb-20 md:pb-10 w-full justify-center">
+              {/* Event Registration Button */}
+              <Link href="/register" className="flex justify-center w-full md:w-auto">
                 <HoverBorderGradient
                   containerClassName="rounded-full"
                   as="button"
-                  className="bg-background md:w-60 w-80 px-10 group flex items-center justify-center space-x-2"
+                  className="bg-background md:w-74 w-80 px-10 group flex items-center justify-center space-x-2"
                 >
                   <Image
                     src="/events/google_logo.png"
@@ -121,16 +124,38 @@ export default function Hero() {
                     width={25}
                     height={25}
                   />
-                  <span className="text-neon-green">Register Now</span>
+                  <span className="text-neon-green">Event Registration</span>
                   <span className="group-hover:text-neon-green">
                     <ArrowRightIcon />
                   </span>
                 </HoverBorderGradient>
               </Link>
-              {/* Subtext below the button */}
-              <p className="text-gray-400 text-center mt-1 text-xs">
-                Sign up here to Register for the events
-              </p>
+
+              {/* Hackathon Registration Button */}
+              <Link href="https://unstop.com/o/PI6XorN" passHref legacyBehavior>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-center w-full md:w-auto"
+                >
+                <HoverBorderGradient
+                  containerClassName="rounded-full"
+                  as="button"
+                  className="bg-background md:w-74 w-80 px-10 group flex items-center justify-center space-x-2"
+                >
+                  <Image
+                    src="/events/unstop.png"
+                    alt="Google Logo"
+                    width={25}
+                    height={25}
+                  />
+                  <span className="text-neon-green">Hacknight Registration</span>
+                  <span className="group-hover:text-neon-green">
+                    <ArrowRightIcon />
+                  </span>
+                </HoverBorderGradient>
+                </a>
+              </Link>
             </div>
           </motion.div>
         </AnimatePresence>
