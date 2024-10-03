@@ -175,9 +175,27 @@ export default function EventSelection() {
         toast.error(`${validation.error} for ${eventDetails.name}`);
         return;
       }
+      //teammates reg check
+      for (const member of event.members) {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_APIHOST}/check_reg`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: member.email }),
+          });
+          const data = await res.json();
+          if (!data.found) {
+            toast.error(`Member ${member.email} has not registered yet.`);
+            return;
+          }
+        } catch (error) {
+          toast.error(`Failed to check registration for ${member.email}.`);
+          return;
+        }
+      }
     }
-  
-
     setLoading(true);
     const eventsWithMembers = selectedEventIds.map((eid) => ({
       event_id: eid,
