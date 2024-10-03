@@ -6,7 +6,7 @@ import QRCode from 'qrcode';
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Edit2, Mail, Phone, School, Calendar, LucideIcon, Github, Linkedin, Instagram, FileText } from "lucide-react";
+import { ArrowLeft, Edit2, Mail, Phone, School, Calendar, LucideIcon, Github, Linkedin, Instagram, FileText, LogOut } from "lucide-react";
 import dynamic from "next/dynamic";
 import SkeletonLoader from "@/app/profile/loading";
 const CursorTrailCanvas = dynamic(() => import('@/components/CursorTrailCanvas'), { ssr: false });
@@ -106,8 +106,16 @@ export default function ProfilePage() {
                     <Link href="/edit" className="flex items-center space-x-2 text-[#b4ff39]">
                         <Button variant="outline" className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E]">
                             <Edit2 className="h-4 w-4" />
-                            <span>Edit Profile</span>
+                            <span className="hidden sm:inline">Edit Profile</span>
                         </Button>
+                    </Link>
+                    <Link href="/logout" className="flex items-center space-x-2 text-[#b4ff39]">
+                            <Button
+                                variant="outline"
+                                className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E] transition duration-300 ease-in-out">
+                                <LogOut className="h-4 w-4" />
+                                <span className="hidden sm:inline">Logout</span>
+                            </Button>
                     </Link>
                 </div>
             </header>
