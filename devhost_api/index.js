@@ -96,6 +96,13 @@ app.post('/socials_upd', isLoggedIn, (req, res) => {
     res.json({ added: "ok" });
 });
 
+app.post('/check_reg', async(req, res) => {
+    const {email} = req.body;
+    const user = await User.findOne({email:email});
+    if(user) return res.status(200).json({found: true});
+    else return res.status(401).json({found:false});
+});
+
 app.post('/verPayment', isLoggedIn, (req, res) => {
     console.log(req.user);
     const { payment_id, order_id, signature, eventsDet } = req.body;
