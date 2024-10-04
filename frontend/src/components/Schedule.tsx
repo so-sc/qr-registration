@@ -77,6 +77,22 @@ const scheduleData = [
         type: "Workshop",
       },
       {
+        icon: <MicVocal />,
+        title: "DevTalk 3",
+        time: "2:00 pm - 2:45 pm",
+        description: "TBA",
+        speaker: "Speaker",
+        type: "Talk",
+      },
+      {
+        icon: <MicVocal />,
+        title: "DevTalk 4",
+        time: "3:00 pm - 3:45 pm",
+        description: "TBA",
+        speaker: "Speaker",
+        type: "Talk",
+      },
+      {
       icon: <Wrench />,
       title: "MasterClass 2",
       time: "2:00 pm - 4:00 pm",

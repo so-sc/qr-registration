@@ -99,8 +99,8 @@ export default function Events() {
       description:
         "Demonstrate your skills in our typing competition and compete for the title of fastest typist!",
       organizer: "Kshama S - 9741433993",
-      date: "Date not allotted",
-      time: "Time not allotted",
+      date: "All three days",
+      time: "",
       imageSrc: "speed-typing.jpg",
     },
     {
