@@ -167,7 +167,18 @@ const attachEvents = async (luser, events) => {
     user.events = [...new Set([...user.events, ...eid])];
     user.eventDet.push(...events);
     await user.save();
-    console.log(user);
+    for (const event of events) {
+        const memEmails = event.members.map(member => member.email);
+        for (const email of memEmails) {
+            const tmember = await User.findOne({ email:email });
+            if (tmember) {
+                tmember.events = [...new Set([...tmember.events, event.event_id])];
+                await tmember.save();
+            } else {
+                console.log(`Team member with email ${email} not found.`);
+            }
+        }
+    }
 };
 
 const findCur = (events) => {
@@ -193,5 +204,9 @@ const updet2 = async (luser, body) => {
     if (body.link) user.ldn = body.link;
     if (body.insta) user.insta = body.insta;
     if (body.red) user.portf = body.red;
+    if(body.interests){
+        const int_list= body.interests.split(",");
+        user.interests=[...new Set([...user.interests, ...int_list])];
+    }
     await user.save();
 };

@@ -74,7 +74,7 @@ export default function RegisterForm() {
       setGit("");
       setRed("");
       setLink("");
-      setInterests(""); // Reset interests
+      setInterests("");
       router.push("/profile");
     } catch (error) {
       console.error("Error updating details:", error);
