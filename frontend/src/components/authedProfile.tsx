@@ -96,29 +96,36 @@ export default function ProfilePage() {
     const noSelectionText = "No selections have been made";
     return (
         <div className="min-h-screen bg-[#1E1E1E] text-white relative">
-            <CursorTrailCanvas className="pointer-events-none z-50 md:flex hidden fixed inset-0 h-full w-full" />
-            <header className="bg-[#2A2A2A] shadow">
-                <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                    <Link href="/" className="flex items-center space-x-2 text-[#b4ff39]">
-                        <ArrowLeft className="h-5 w-5" />
-                        <span>Back to Home</span>
-                    </Link>
-                    <Link href="/edit" className="flex items-center space-x-2 text-[#b4ff39]">
-                        <Button variant="outline" className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E]">
-                            <Edit2 className="h-4 w-4" />
-                            <span className="hidden sm:inline">Edit Profile</span>
-                        </Button>
-                    </Link>
-                    <Link href="/logout" className="flex items-center space-x-2 text-[#b4ff39]">
+        <CursorTrailCanvas className="pointer-events-none z-50 md:flex hidden fixed inset-0 h-full w-full" />
+        <header className="bg-[#2A2A2A] shadow">
+            <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                {/* Back to Home button on the left */}
+                <Link href="/" className="flex items-center space-x-2 text-[#b4ff39]">
+                    <ArrowLeft className="h-5 w-5" />
+                    <span>Back to Home</span>
+                </Link>
+                    <div className="flex space-x-4">
+                        <Link href="/edit" className="flex items-center space-x-2 text-[#b4ff39]">
+                            <Button
+                                variant="outline"
+                                className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E]">
+                                <Edit2 className="h-4 w-4" />
+                                <span className="hidden sm:inline">Edit Socials</span>
+                            </Button>
+                        </Link>
+                        
+                        <Link href="/logout" className="flex items-center space-x-2 text-[#b4ff39]">
                             <Button
                                 variant="outline"
                                 className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E] transition duration-300 ease-in-out">
                                 <LogOut className="h-4 w-4" />
                                 <span className="hidden sm:inline">Logout</span>
                             </Button>
-                    </Link>
+                        </Link>
+                    </div>
                 </div>
             </header>
+    
 
             <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                 <div className="bg-[#2A2A2A] shadow overflow-hidden sm:rounded-lg">
