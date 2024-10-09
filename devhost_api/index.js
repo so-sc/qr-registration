@@ -184,7 +184,7 @@ const attachEvents = async (luser, events) => {
 const findCur = (events) => {
     var cur = 1;
     for (var i = 0; i < events.length; i++) if (priceMap[events[i]] != undefined) cur += priceMap[events[i]];
-    cur*=115;
+    cur*=105;
     return cur;
 };
 
