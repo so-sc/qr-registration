@@ -221,7 +221,7 @@ export default function EventSelection() {
       if (orderData && orderData.id) {
         if (window.Razorpay) {
           const options = {
-            key: "rzp_test_bhvlhaqYBs58iu",
+            key: process.env.razorId,
             amount: orderData.amount,
             currency: orderData.currency,
             name: "DevHost 2024 Event Registration",
