@@ -46,9 +46,9 @@ app.get('/testend', (req, res) => {
     res.json("I'm Up");
 });
 const priceMap = {
-    "101": 149, "102": 129, "103": 159, "104": 179,
-    "105": 149, "106": 139, "107": 159, "108": 129,
-    "109": 159, "110": 169
+    "101": 100, "102": 100, "103": 100, "104": 100,
+    "105": 200, "106": 500, "107": 500, "108": 300,
+    "109": 500, "110": 300,"111":300
 };
 app.get('/update-details', isLoggedIn, (req, res) => {
     res.json("hello, " + req.user.username);
@@ -182,9 +182,10 @@ const attachEvents = async (luser, events) => {
 };
 
 const findCur = (events) => {
-    var cur = 5;
+    var cur = 1;
     for (var i = 0; i < events.length; i++) if (priceMap[events[i]] != undefined) cur += priceMap[events[i]];
-    return "" + (cur * 100);
+    cur*=115;
+    return cur;
 };
 
 const updet = async (luser, body) => {
