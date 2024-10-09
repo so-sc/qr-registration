@@ -322,8 +322,8 @@ export const EVENTS = [
   },
   {
     name: "RoboSumo: The Battle Of Bots (<5KG)",
-    organizer: "TBA",
-    description: "TBA",
+    organizer: "SRC",
+    description: "Robots Collide, Champions Rise!",
     date: "TBA",
     time: "TBA",
     type: "event",
@@ -334,8 +334,8 @@ export const EVENTS = [
   },
   {
     name: "RoboSumo: The Battle Of Bots (>5KG)",
-    organizer: "TBA",
-    description: "TBA",
+    organizer: "SRC",
+    description: "Robots Collide, Champions Rise!",
     date: "TBA",
     time: "TBA",
     type: "event",
@@ -346,8 +346,8 @@ export const EVENTS = [
   },
   {
     name: "LineFollower",
-    organizer: "TBA",
-    description: "TBA",
+    organizer: "SRC",
+    description: " Navigate, Compete, Conquer!",
     date: "TBA",
     time: "TBA",
     type: "event",
@@ -358,8 +358,8 @@ export const EVENTS = [
   },
   {
     name: "RoboSoccer",
-    organizer: "TBA",
-    description: "TBA",
+    organizer: "SRC",
+    description: " Kick, Score, and Dominate!",
     date: "TBA",
     time: "TBA",
     type: "event",
