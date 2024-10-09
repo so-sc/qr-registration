@@ -83,7 +83,7 @@ export default function ProfilePage() {
     const evNames = (events: string[]) => {
         return events.map(ev => evn[ev] || "Unknown Event");
     };  
-    const profile = {
+    const profile={
         name: profileData.username,
         image: "/events/profile.jpg",
         email: profileData.email,

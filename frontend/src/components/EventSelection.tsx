@@ -36,8 +36,23 @@ declare global {
     Razorpay: any;
   }
 }
-
+interface ProfileData {
+  username: string;
+  college: string;
+  gID:string;
+  phone: string;
+  email: string;
+  year: string;
+  branch: string;
+  insta: string;
+  portf: string;
+  ldn: string;
+  git: string;
+  interests:[string];
+  events:[string];
+}
 export default function EventSelection() {
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [selectedEvents, setSelectedEvents] = useState<SelectedEvents>({});
   const [regEvents, setregEvents] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -54,6 +69,8 @@ export default function EventSelection() {
         });
         if (res.status === 200) {
           const data = await res.json();
+          const resData: ProfileData = await res.json();
+          setProfileData(resData);
           setregEvents(data.user.events||[]);
           setTestLoad(false)
         } else {
@@ -69,6 +86,16 @@ export default function EventSelection() {
     getUserData();
   }, []);
   if(testLoad) return(<SkeletonLoader/>)
+    if(!profileData) return (<></>);
+    const profile = {
+      name: profileData.username,
+      email: profileData.email,
+      phone: profileData.phone,
+      college: profileData.college,
+      branch: profileData.branch,
+      year: profileData.year,    
+  };  
+
   const validateMembers = (members: Member[]): { isValid: boolean; error?: string } => {
     for (const member of members) {
       if (!member.name.trim()) {
@@ -231,9 +258,9 @@ export default function EventSelection() {
               verifyPayment(response, eventsWithMembers);
             },
             prefill: {
-              name: "John Doe",
-              email: "john.doe@example.com",
-              contact: "9999999999",
+              name: profile.name,
+              email: profile.email,
+              contact: profile.phone,
             },
             theme: {
               color: "#4caf50",
