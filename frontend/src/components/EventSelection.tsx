@@ -68,9 +68,10 @@ export default function EventSelection() {
           credentials: "include",
         });
         if (res.status === 200) {
-          const resData: ProfileData = await res.json();
+          const data = await res.json();
+          const resData: ProfileData = data;
           setProfileData(resData);
-          setregEvents(resData.events||[]);
+          setregEvents(data.user.events||[]);
           setTestLoad(false)
         } else {
           console.log("failed");
