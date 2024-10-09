@@ -110,12 +110,6 @@ export default function ProfilePage() {
                         <ArrowLeft className="h-5 w-5" />
                         <span>Back to Home</span>
                     </Link>
-                    <Link href="/edit" className="flex items-center space-x-2 text-[#b4ff39]">
-                        <Button variant="outline" className="flex items-center space-x-2 bg-[#2A2A2A] text-[#b4ff39] border-[#b4ff39] hover:bg-[#b4ff39] hover:text-[#1E1E1E]">
-                            <Edit2 className="h-4 w-4" />
-                            <span>Edit Profile</span>
-                        </Button>
-                    </Link>
                 </div>
             </header>
 

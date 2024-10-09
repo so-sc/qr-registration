@@ -1,5 +1,5 @@
 import { Link } from "lucide-react";
-// import Image from "next/image"; // Commenting out Image import for now
+// import Image from "next/image"; 
 import React from "react";
 
 export default function Events() {
