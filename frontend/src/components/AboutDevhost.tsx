@@ -32,7 +32,7 @@ export default function AboutDevhost() {
                 </h1>
                 <p className="text-lg tracking-wider py-2">{devhostData.about}</p>
                 <div className="flex flex-col md:flex-row md:items-center gap-4 mt-6">
-                  <a href="https://drive.google.com/uc?export=download&id=1E0Ci3Lh-N-1pge_YUK8rHcic6GU0khzj" download>
+                  <a href="/brochure/General Brochure Devhost.pdf" download>
                     <HoverBorderGradient
                       containerClassName="rounded-full"
                       as="button"
@@ -43,7 +43,7 @@ export default function AboutDevhost() {
                     </HoverBorderGradient>
                   </a>
 
-                  <a href="https://drive.google.com/uc?export=download&id=1N4Hf_OiOB2g2rpQIliOyZdV138tO8cOe" download>
+                  <a href="/brochure/Event Rulebook - Devhost.pdf" download>
                     <HoverBorderGradient
                       containerClassName="rounded-full"
                       as="button"
