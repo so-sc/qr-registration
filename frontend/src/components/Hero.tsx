@@ -59,6 +59,14 @@ export default function Hero() {
                   width={500}
                   height={500}
                 />
+                <Image
+                  priority
+                  src="/synergia_logo.svg"
+                  className="w-20 h-18"
+                  alt="Synergia logo"
+                  width={500}
+                  height={500}
+                />
               </div>
               <p className="pt-2 tracking-wide text-neon-green text-center">
                 Presents
