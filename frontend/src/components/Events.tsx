@@ -18,13 +18,13 @@ export default function Events() {
     {
       id: 1,
       title: "CSS Action",
-      caption: "Put your web design chops to the test!",
+      caption: "Put your web design skills to the test!",
       description:
         "Join a dynamic web-based competition showcasing stunning UI using HTML, CSS, and JavaScript.",
       organizer: "Koshin Hegde - 7899715941",
       date: "7th Nov",
       time: "11:30am - 12:45pm",
-      imageSrc: "/CSS_Action.png",
+      imageSrc: "/events/CSS_Action.png",
     },
     {
       id: 2,
@@ -35,7 +35,7 @@ export default function Events() {
       organizer: "Nithesh Alva - 7484775694",
       date: "8th Nov",
       time: "8:45am - 9:45am",
-      imageSrc: "/CodeForge.png",
+      imageSrc: "/events/CodeForge.png",
     },
     {
       id: 3,
@@ -46,7 +46,7 @@ export default function Events() {
       organizer: "Yash Laxman - 6362072050",
       date: "8th Nov",
       time: "10:30am - 12:00pm",
-      imageSrc: "/ctf.jpg",
+      imageSrc: "/events/ctf.jpg",
     },
     {
       id: 4,
@@ -57,7 +57,7 @@ export default function Events() {
       organizer: "Rithuparna K.S - 7019821295",
       date: "8th Nov",
       time: "12:00pm - 1:30pm",
-      imageSrc: "/SightlessSyntax.png",
+      imageSrc: "/events/SightlessSyntax.png",
     },
     {
       id: 5,
@@ -68,7 +68,7 @@ export default function Events() {
       organizer: "Apeksha L Naik - 8904315769",
       date: "8th Nov",
       time: "10:30am - 1:30pm",
-      imageSrc: "/PitchX.png",
+      imageSrc: "/events/PitchX.png",
     },
     {
       id: 6,
@@ -79,7 +79,7 @@ export default function Events() {
       organizer: "Advaith S Shetty - 9902698070",
       date: "8th Nov",
       time: "2:00pm - 4:00pm",
-      imageSrc: "/BGMI.png",
+      imageSrc: "/events/BGMI.png",
     },
     {
       id: 7,
@@ -88,9 +88,9 @@ export default function Events() {
       description:
         "Race against top competitors and push your limits in this exhilarating speedcubing contest.",
       organizer: "Manushree P B - 6363316781",
-      date: "Date not allotted",
-      time: "Time not allotted",
-      imageSrc: "/Speedcuber.png",
+      date: "All Three Days",
+      time: "",
+      imageSrc: "/events/Speedcuber.png",
     },
     {
       id: 8,
@@ -101,7 +101,7 @@ export default function Events() {
       organizer: "Kshama S - 9741433993",
       date: "All three days",
       time: "",
-      imageSrc: "/BlazzingFingers.jpg",
+      imageSrc: "/events/BlazzingFingers.jpg",
     },
     {
       id: 9,
@@ -112,7 +112,7 @@ export default function Events() {
       organizer: "Not yet decided",
       date: "7th Nov",
       time: "2:15pm - 4:30pm",
-      imageSrc: "/surge.jpg",
+      imageSrc: "/events/surge.jpg",
     },
   ];
   
@@ -130,7 +130,7 @@ export default function Events() {
             >
               <div className="event_card border-white/10 border rounded-xl p-6 bg-background h-full">
                 <div className="flex flex-col h-full">
-                  <div className="relative w-full h-[160px] md:h-[200px] mb-4">
+                  <div className="relative w-full h-[160px] md:h-[165px] mb-4">
                     <Image
                       src={card.imageSrc}
                       alt={card.title}
