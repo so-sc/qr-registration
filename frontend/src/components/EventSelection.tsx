@@ -69,7 +69,7 @@ export default function EventSelection() {
         });
         if (res.status === 200) {
           const data = await res.json();
-          const resData: ProfileData = data;
+          const resData: ProfileData = data.user;
           setProfileData(resData);
           setregEvents(data.user.events||[]);
           setTestLoad(false)
@@ -127,29 +127,39 @@ export default function EventSelection() {
   const handleAddMember = (eid: string) => {
     const eventDetails = EVENTS.find((e) => e.event_id === eid);
     if (!eventDetails) return;
-
     const { max_members: MAX_MEMBERS } = eventDetails;
-
     if (selectedEvents[eid]?.members.length >= MAX_MEMBERS) {
       toast.error(`Maximum ${MAX_MEMBERS} members allowed for this event.`);
       return;
     }
-    setSelectedEvents((prev) => ({
-      ...prev,
-      [eid]: {
-        ...prev[eid],
-        members: [...(prev[eid]?.members || []), { name: "", email: "" }],
-      },
-    }));
+      setSelectedEvents((prev) => {
+      const members = prev[eid]?.members || [];
+      const newmem = members.length===0
+        ? [{ name: profile.name, email: profile.email }]
+        : [...members, { name: "", email: "" }];
+      return {
+        ...prev,
+        [eid]: {
+          ...prev[eid],
+          members: newmem,
+        },
+      };
+    });
   };
   const handleRemoveMember = (eid: string, index: number) => {
-    setSelectedEvents((prev) => ({
+    setSelectedEvents((prev) => {
+      const members = prev[eid]?.members || [];
+      if(index===0&&members.length>1){
+        toast.error("The team leader cannot be removed.");
+        return prev;
+      }
+      return {
       ...prev,
       [eid]: {
         ...prev[eid],
         members: prev[eid].members.filter((_, i) => i !== index),
       },
-    }));
+    }});
   };
 
   const handleMemberInput = (
@@ -387,6 +397,7 @@ export default function EventSelection() {
                             onChange={(e) =>
                               handleMemberInput(event.event_id, index, "name", e.target.value)
                             }
+                            disabled={index===0}
                             className="w-full p-2 bg-[#333333] text-white rounded"
                             required
                           />
@@ -396,6 +407,7 @@ export default function EventSelection() {
                             type="email"
                             placeholder={`Member ${index + 1} Email`}
                             value={member.email}
+                            disabled={index===0}
                             onChange={(e) =>
                               handleMemberInput(event.event_id, index, "email", e.target.value)
                             }
