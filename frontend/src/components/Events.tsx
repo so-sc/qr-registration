@@ -109,9 +109,9 @@ export default function Events() {
       caption: "Become the ultimate agent in our competition!",
       description:
         "Master your skills and outsmart opponents to achieve victory in thrilling Valorant matches.",
-      organizer: "Not yet decided",
+      organizer: "Megarth - 9845153931",
       date: "7th Nov",
-      time: "2:15pm - 4:30pm",
+      time: "11:00am onwards",
       imageSrc: "/events/surge.jpg",
     },
   ];
@@ -130,12 +130,13 @@ export default function Events() {
             >
               <div className="event_card border-white/10 border rounded-xl p-6 bg-background h-full">
                 <div className="flex flex-col h-full">
-                  <div className="relative w-full h-[160px] md:h-[165px] mb-4">
+                  <div className="relative w-full h-0 pb-[52.25%] mb-4">
                     <Image
                       src={card.imageSrc}
                       alt={card.title}
                       fill
                       className="rounded-xl object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   </div>
                   <h2 className="leading-6 mb-1 font-semibold text-xl tracking-wider text-white">
