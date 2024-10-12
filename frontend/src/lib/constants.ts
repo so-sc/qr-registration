@@ -301,7 +301,7 @@ export const EVENTS = [
     organizer: "Not yet decided",
     description: "Demonstrate your tactical skills in Valorant and claim victory!",
     date: "7th Nov",
-    time: "2:15pm - 4:30pm",
+    time: "11am onwards",
     type: "event",
     event_id: "107",
     price: 500,
