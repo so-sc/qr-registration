@@ -368,14 +368,14 @@ export default function EventSelection() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-lg text-[#aef737]">{event.name}</h3>
+                    <h3 className={`font-semibold text-lg ${parseInt(event.event_id)>=108? "text-[#00ffff]":"text-[#aef737]"}`}>{event.name}</h3>
                     <p className="text-sm text-white">{event.description}</p>
                     <p className="text-sm text-[#a0a0a0]">Date: {event.date}</p>
                     <p className="text-sm text-[#a0a0a0]">Time: {event.time}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <div className="text-[#aef737] text-lg font-bold">₹{event.price}</div>
+                  <div className={`${parseInt(event.event_id)>=108? "text-[#00ffff]":"text-[#aef737]"} text-lg font-bold`}>₹{event.price}</div>
                   {selectedEvents[event.event_id]?.selected ? (
                     <ChevronUp className="w-6 h-6 text-[#d4d4d4]" />
                   ) : (
