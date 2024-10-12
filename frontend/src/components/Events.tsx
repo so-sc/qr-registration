@@ -109,9 +109,9 @@ export default function Events() {
       caption: "Become the ultimate agent in our competition!",
       description:
         "Master your skills and outsmart opponents to achieve victory in thrilling Valorant matches.",
-      organizer: "Not yet decided",
+      organizer: "Megarth - 9845153931",
       date: "7th Nov",
-      time: "2:15pm - 4:30pm",
+      time: "11:00am onwards",
       imageSrc: "/events/surge.jpg",
     },
   ];
