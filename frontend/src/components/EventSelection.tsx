@@ -359,7 +359,7 @@ export default function EventSelection() {
                   <div
                     className={`flex-shrink-0 w-6 h-6 border-2 rounded-md transition-colors ${
                       selectedEvents[event.event_id]?.selected
-                        ? "bg-[#aef737] border-[#aef737]"
+                        ? (parseInt(event.event_id)>=108? "bg-[#00ffff] border-[#00ffff]":"bg-[#aef737] border-[#aef737]")
                         : "border-[#d4d4d4]"
                     }`}
                   >
