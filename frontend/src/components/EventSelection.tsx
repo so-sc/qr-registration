@@ -69,7 +69,7 @@ export default function EventSelection() {
         });
         if (res.status === 200) {
           const data = await res.json();
-          const resData: ProfileData = data;
+          const resData: ProfileData = data.user;
           setProfileData(resData);
           setregEvents(data.user.events||[]);
           setTestLoad(false)
@@ -127,29 +127,39 @@ export default function EventSelection() {
   const handleAddMember = (eid: string) => {
     const eventDetails = EVENTS.find((e) => e.event_id === eid);
     if (!eventDetails) return;
-
     const { max_members: MAX_MEMBERS } = eventDetails;
-
     if (selectedEvents[eid]?.members.length >= MAX_MEMBERS) {
       toast.error(`Maximum ${MAX_MEMBERS} members allowed for this event.`);
       return;
     }
-    setSelectedEvents((prev) => ({
-      ...prev,
-      [eid]: {
-        ...prev[eid],
-        members: [...(prev[eid]?.members || []), { name: "", email: "" }],
-      },
-    }));
+      setSelectedEvents((prev) => {
+      const members = prev[eid]?.members || [];
+      const newmem = members.length===0
+        ? [{ name: profile.name, email: profile.email }]
+        : [...members, { name: "", email: "" }];
+      return {
+        ...prev,
+        [eid]: {
+          ...prev[eid],
+          members: newmem,
+        },
+      };
+    });
   };
   const handleRemoveMember = (eid: string, index: number) => {
-    setSelectedEvents((prev) => ({
+    setSelectedEvents((prev) => {
+      const members = prev[eid]?.members || [];
+      if(index===0&&members.length>1){
+        toast.error("The team leader cannot be removed.");
+        return prev;
+      }
+      return {
       ...prev,
       [eid]: {
         ...prev[eid],
         members: prev[eid].members.filter((_, i) => i !== index),
       },
-    }));
+    }});
   };
 
   const handleMemberInput = (
@@ -349,7 +359,7 @@ export default function EventSelection() {
                   <div
                     className={`flex-shrink-0 w-6 h-6 border-2 rounded-md transition-colors ${
                       selectedEvents[event.event_id]?.selected
-                        ? "bg-[#aef737] border-[#aef737]"
+                        ? (parseInt(event.event_id)>=108? "bg-[#00ffff] border-[#00ffff]":"bg-[#aef737] border-[#aef737]")
                         : "border-[#d4d4d4]"
                     }`}
                   >
@@ -358,14 +368,14 @@ export default function EventSelection() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <h3 className="font-semibold text-lg text-[#aef737]">{event.name}</h3>
+                    <h3 className={`font-semibold text-lg ${parseInt(event.event_id)>=108? "text-[#00ffff]":"text-[#aef737]"}`}>{event.name}</h3>
                     <p className="text-sm text-white">{event.description}</p>
                     <p className="text-sm text-[#a0a0a0]">Date: {event.date}</p>
                     <p className="text-sm text-[#a0a0a0]">Time: {event.time}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
-                  <div className="text-[#aef737] text-lg font-bold">₹{event.price}</div>
+                  <div className={`${parseInt(event.event_id)>=108? "text-[#00ffff]":"text-[#aef737]"} text-lg font-bold`}>₹{event.price}</div>
                   {selectedEvents[event.event_id]?.selected ? (
                     <ChevronUp className="w-6 h-6 text-[#d4d4d4]" />
                   ) : (
@@ -387,6 +397,7 @@ export default function EventSelection() {
                             onChange={(e) =>
                               handleMemberInput(event.event_id, index, "name", e.target.value)
                             }
+                            disabled={index===0}
                             className="w-full p-2 bg-[#333333] text-white rounded"
                             required
                           />
@@ -396,6 +407,7 @@ export default function EventSelection() {
                             type="email"
                             placeholder={`Member ${index + 1} Email`}
                             value={member.email}
+                            disabled={index===0}
                             onChange={(e) =>
                               handleMemberInput(event.event_id, index, "email", e.target.value)
                             }
