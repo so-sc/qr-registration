@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const Razorpay = require('razorpay');
 const User = require('./models/user.js');
+const {sendConf} = require('./mailer.js')
 require('dotenv').config();
 require('./auth.js');
 require('./dbInit');
@@ -137,7 +138,6 @@ app.get('/viewprofile', async (req, res) => {
     const user = await User.findOne({ gID: gid + "" });
     if (!user) { return res.status(404).json({ message: "Unknown" }); }
     console.log(user);
-
     const resbody = {
         message: "gotcha",
         username: user.username,
@@ -167,6 +167,7 @@ const attachEvents = async (luser, events) => {
     user.events = [...new Set([...user.events, ...eid])];
     user.eventDet.push(...events);
     await user.save();
+    sendConf(user);
     for (const event of events) {
         const memEmails = event.members.map(member => member.email);
         for (const email of memEmails) {
@@ -174,6 +175,7 @@ const attachEvents = async (luser, events) => {
             if (tmember) {
                 tmember.events = [...new Set([...tmember.events, event.event_id])];
                 await tmember.save();
+                sendConf(tmember);
             } else {
                 console.log(`Team member with email ${email} not found.`);
             }
