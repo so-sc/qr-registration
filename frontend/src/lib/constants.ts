@@ -240,7 +240,7 @@ export const EVENTS = [
     name: "CSS Action",
     organizer: "Koshin Hegde",
     description: "A competition to test your web design and coding skills.",
-    date: "7th Nov",
+    date: "8th Nov",
     time: "11:30am - 12:45pm",
     type: "event",
     event_id: "101",
