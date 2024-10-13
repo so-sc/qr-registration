@@ -6,6 +6,7 @@ const passport = require('passport');
 const Razorpay = require('razorpay');
 const User = require('./models/user.js');
 const {sendConf} = require('./mailer.js')
+const QRCode = require('qrcode');
 require('dotenv').config();
 require('./auth.js');
 require('./dbInit');
@@ -159,7 +160,19 @@ app.get('/viewprofile', async (req, res) => {
     console.log(resbody);
     return res.json(resbody);
 });
-
+app.get('/genqr', async (req, res) => {
+    const text = req.query.gid || '/';
+    try {
+        const qrUrl = await QRCode.toDataURL("http://devhost.sosc.org.in/viewuser?gid="+text);
+        res.setHeader('Content-Type', 'image/png');
+        const base64Data = qrUrl.replace(/^data:image\/png;base64,/, "");
+        const img = Buffer.from(base64Data, 'base64');
+        res.end(img);
+    } catch (error) {
+        console.error('Error generating QR code', error);
+        res.status(500).send('Error generating QR code');
+    }
+});
 const attachEvents = async (luser, events) => {
     console.log(events)
     const user = await User.findOne({ gID: luser.gID });
