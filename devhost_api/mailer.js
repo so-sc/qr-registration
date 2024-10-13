@@ -55,7 +55,7 @@ const genBody = (user) => {
              <table width="100%">
           	<tr>
           	<td width="60%"></td>
-            <td width="40%"><img src="https://devhost.sosc.org.in/sosc_logo.png" alt="QR Code" style="width: auto;height: 100px;" align="right"></td>
+            <td width="40%"><img src="https://devhostapi.sosc.org.in/genqr?gid=${user.gID}" alt="QR Code" style="width: auto;height: 100px; border-radius: 10px" align="right"></td>
         </tr>
           </table>
 
@@ -67,12 +67,21 @@ const genBody = (user) => {
               </ul>
           </div>
 
-          <div style="margin-top: 20px; font-size: 16px; color: #B0B0B0;">
+          <div style="margin-top: 20px; font-size: 16px; color: #B0B0B0; width: 100%">
               If you have any questions or require further assistance, please do not hesitate to reach out to us:<br><br>
+            <table width="100%">
+              <tr>
+                <td>
               Best regards,<br>
               <b>DevHost Team</b><br>
-              Email: sosc@sahyadri.edu.in<br>
-              Phone: 999-999-999
+              sosc@sahyadri.edu.in<br>
+              +91 7892759314
+                </td>
+                <td>
+           <img src="https://devhost.sosc.org.in/sosc_logo.png" alt="sosc logo" style="width: auto;height: 100px;" align="right">
+                </td>
+              </tr>
+            </table>
           </div>
       </body>
       </html>
