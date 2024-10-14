@@ -114,58 +114,100 @@ export default function Events() {
       time: "11:00am onwards",
       imageSrc: "/events/surge.jpg",
     },
+    {
+      id: 10,
+      title: "RoboSumo",
+      caption: "Outmaneuver and overpower your opponent in this robot showdown!",
+      description: "Build a robot for weight, traction, and pushing power. Win in head-to-head matches.",
+      organizer: "Gurudeep - 9606408688",
+      date: "8th Nov",
+      time: "9:30am onwards",
+      imageSrc: "/events/Sumo.png"
+    },
+    {
+      id: 11,
+      title: "RoboSoccer",
+      caption: "Join the future of football with robots as the stars!",
+      description: "Control your robot to score goals in this tech-meets-tactics football match.",
+      organizer: "Gurudeep - 9606408688",
+      date: "8th Nov",
+      time: "1:30am onwards",
+      imageSrc: "/events/RoboSoccer.png"
+    },
+    {
+      id: 12,
+      title: "Line Follower",
+      caption: "Can your bot stay on track and lead the pack?",
+      description: "Test your bot's precision and speed. Navigate obstacles to reach victory!",
+      organizer: "Gurudeep - 9606408688",
+      date: "9th Nov",
+      time: "8:00am onwards",
+      imageSrc: "/events/Linefollower.jpg"
+    }  
   ];
   
-  return (
-    <div className="flex justify-center pb-10 items-center w-full">
-      <div className="max-w-6xl mb-20 w-full">
-        <h1 className="select-none text-center text-3xl md:text-4xl font-semibold md:pb-16 pb-10">
-          Events
-        </h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {cardData.map((card) => (
-            <div
-              key={card.id}
-              className="relative flex flex-col transition-shadow duration-300 hover:shadow-[0_0_5px_2px_rgba(180,255,57,0.4)] rounded-xl h-full"
-            >
-              <div className="event_card border-white/10 border rounded-xl p-6 bg-background h-full">
-                <div className="flex flex-col h-full">
-                  <div className="relative w-full h-0 pb-[52.25%] mb-4">
-                    <Image
-                      src={card.imageSrc}
-                      alt={card.title}
-                      fill
-                      className="rounded-xl object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                  <h2 className="leading-6 mb-1 font-semibold text-xl tracking-wider text-white">
-                    {card.title}
-                  </h2>
-                  <p className="block mb-2 font-semibold leading-none text-white/80 pt-2">
-                    {card.date}
+  const devHostEvents = cardData.filter(card => card.id <= 9);
+  const srcEvents = cardData.filter(card => card.id > 9);
+
+  const EventSection = ({ title, events }: { title: string, events: CardData[] }) => (
+    <div>
+      <h2 className="select-none text-center text-3xl md:text-4xl font-semibold md:pb-16 pb-10">
+        {title}
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {events.map((card) => (
+          <div
+            key={card.id}
+            className="relative flex flex-col transition-shadow duration-300 hover:shadow-[0_0_5px_2px_rgba(180,255,57,0.4)] rounded-xl h-full"
+          >
+            <div className="event_card border-white/10 border rounded-xl p-6 bg-background h-full">
+              <div className="flex flex-col h-full">
+                <div className="relative w-full h-0 pb-[52.25%] mb-4">
+                  <Image
+                    src={card.imageSrc}
+                    alt={card.title}
+                    fill
+                    className="rounded-xl object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+                <h2 className="leading-6 mb-1 font-semibold text-xl tracking-wider text-white">
+                  {card.title}
+                </h2>
+                <p className="block mb-2 font-semibold leading-none text-white/80 pt-2">
+                  {card.date}
+                </p>
+                <time className="block mb-2 font-normal leading-none text-white/60">
+                  {card.time}
+                </time>
+                <h3 className="leading-6 mb-1 pt-2 font-semibold text-base text-primary tracking-wider">
+                  {card.caption}
+                </h3>
+                <p className="text-sm tracking-wider py-2 flex-grow">
+                  {card.description}
+                </p>
+                <div className="mt-auto">
+                  <p className="block font-semibold leading-none text-white mt-2 text-sm">
+                    Organizer:
                   </p>
-                  <time className="block mb-2 font-normal leading-none text-white/60">
-                    {card.time}
-                  </time>
-                  <h3 className="leading-6 mb-1 pt-2 font-semibold text-base text-primary tracking-wider">
-                    {card.caption}
-                  </h3>
-                  <p className="text-sm tracking-wider py-2 flex-grow">
-                    {card.description}
+                  <p className="block font-normal leading-none text-white/90 mt-1 text-sm">
+                    {card.organizer}
                   </p>
-                  <div className="mt-auto">
-                    <p className="block font-semibold leading-none text-white mt-2 text-sm">
-                      Organizer:
-                    </p>
-                    <p className="block font-normal leading-none text-white/90 mt-1 text-sm">
-                      {card.organizer}
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="flex justify-center pb-10 items-center w-full">
+      <div className="max-w-6xl mb-20 w-full">
+        <EventSection title="DevHost Events" events={devHostEvents} />
+        <div className="mt-20">
+          <EventSection title="SRC Events" events={srcEvents} />
         </div>
       </div>
     </div>
