@@ -13,7 +13,7 @@ export default function AboutSRC() {
   const srcData: SRCData = {
     title: "About SRC",
     caption: "Innovating the Future of Technology",
-    about: "SRC is a pioneering initiative that brings together tech enthusiasts and innovators to explore the latest advancements in technology. Our mission is to foster creativity and collaboration among participants through hands-on workshops, engaging discussions, and interactive sessions. Whether you're a seasoned expert or just starting your tech journey, SRC provides a platform for everyone to learn, share ideas, and make a difference. Join us in our upcoming events where we dive into exciting topics ranging from artificial intelligence to sustainable technology practices.",
+    about: "SRC (Sahyadri Robotics Club) is a pioneering initiative that brings together tech enthusiasts and innovators to explore the latest advancements in technology. Our mission is to foster creativity and collaboration among participants through hands-on workshops, engaging discussions, and interactive sessions. Whether you're a seasoned expert or just starting your tech journey, SRC provides a platform for everyone to learn, share ideas, and make a difference. Join us in our upcoming events where we dive into exciting topics ranging from artificial intelligence to sustainable technology practices.",
     logoSrc: "temp.jpg",
   };
 
@@ -36,7 +36,7 @@ export default function AboutSRC() {
               <a href="/brochure/SRC_Rulebook.pdf" download>
                 <HoverBorderGradient
                   containerClassName="rounded-full"
-                  as="div" // Change this to `div` instead of `button`
+                  as="div"
                   className="bg-background w-full md:w-auto px-6 md:px-8 py-2 md:py-3 group flex items-center justify-center space-x-2 cursor-pointer" // Add `cursor-pointer` to indicate it's clickable
                 >
                   <Download size={20} className="text-neon-green" />
