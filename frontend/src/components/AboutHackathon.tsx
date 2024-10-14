@@ -22,7 +22,7 @@ export default function AboutHackathon() {
           className="bg-background w-full h-full"
         >
           <div className="pt-10 pb-10 px-5 md:px-10">
-            <h1 className="select-none text-center text-xl md:text-3xl font-semibold pb-6">
+            <h1 className="select-none text-center text-2xl md:text-4xl font-semibold pb-6">
               {hackathonData.title}
             </h1>
             <p className="text-sm md:text-lg tracking-wider text-left">{hackathonData.about}</p>
