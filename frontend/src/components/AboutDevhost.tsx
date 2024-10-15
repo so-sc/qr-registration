@@ -36,7 +36,6 @@ export default function AboutDevhost() {
               <a href="/brochure/Event Rulebook - Devhost.pdf" download>
                 <HoverBorderGradient
                   containerClassName="rounded-full"
-                  as="button"
                   className="bg-background w-full md:w-auto px-6 md:px-8 py-2 md:py-3 group flex items-center justify-center space-x-2"
                 >
                   <Download size={20} className="text-neon-green" />
@@ -47,7 +46,6 @@ export default function AboutDevhost() {
               <a href="/brochure/General Brochure Devhost.pdf" download>
                 <HoverBorderGradient
                   containerClassName="rounded-full"
-                  as="button"
                   className="bg-background w-full md:w-auto px-6 md:px-8 py-2 md:py-3 group flex items-center justify-center space-x-2"
                 >
                   <Download size={20} className="text-neon-green" />
