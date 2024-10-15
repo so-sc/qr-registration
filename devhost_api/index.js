@@ -6,12 +6,15 @@ const passport = require('passport');
 const Razorpay = require('razorpay');
 const User = require('./models/user.js');
 const {sendConf} = require('./mailer.js')
+const {regStats} = require('./dHostStats.js')
 const QRCode = require('qrcode');
 require('dotenv').config();
 require('./auth.js');
 require('./dbInit');
 const cors = require('cors');
 const app = express();
+app.set('view engine', 'ejs');
+app.set('views', './views');
 app.enable('trust proxy');
 app.use(express.static('public'));
 mongoose.connect(process.env.mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -129,6 +132,11 @@ app.get('/check-auth', (req, res) => {
     } else {
         res.status(401).json({ authenticated: false });
     }
+});
+
+app.get('/stats', async(req, res) => {
+    const data=await regStats();
+   res.render('stats',{data});
 });
 
 app.get('/viewprofile', async (req, res) => {
