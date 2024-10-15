@@ -6,6 +6,7 @@ import Events from "@/components/Events";
 import Gallery from "@/components/Gallery";
 import AboutDevhost from "@/components/AboutDevhost";
 import AboutHackathon from "@/components/AboutHackathon";
+import AboutSRC from "@/components/AboutSRC";
 import Hero from "@/components/Hero";
 import Map from "@/components/Map";
 import Schedule from "@/components/Schedule";
@@ -44,6 +45,7 @@ export default function Home() {
         <Counter />
         <Schedule />
         <AboutDevhost />
+        <AboutSRC />
         <AboutHackathon />
         <Events />
         {/* <Speakers /> */}
