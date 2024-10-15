@@ -15,7 +15,6 @@ export default function Hero() {
         <Link href="/profile" className="cursor-pointer">
           <HoverBorderGradient
             containerClassName="rounded-full"
-            as="button"
             className="bg-background p-1 flex items-center justify-center space-x-2 md:p-2"
           >
             <UserIcon className="text-neon-green w-7 h-7 md:w-8 md:h-8" />
@@ -123,7 +122,6 @@ export default function Hero() {
               <Link href="/register" className="flex justify-center w-full md:w-auto">
                 <HoverBorderGradient
                   containerClassName="rounded-full"
-                  as="button"
                   className="bg-background md:w-74 w-80 px-10 group flex items-center justify-center space-x-2"
                 >
                   <Image
@@ -132,7 +130,9 @@ export default function Hero() {
                     width={25}
                     height={25}
                   />
-                  <span className="text-neon-green">Event Registration</span>
+                  <span className="text-neon-green text-center md:text-base text-sm">
+                    Event Registration
+                  </span>
                   <span className="group-hover:text-neon-green">
                     <ArrowRightIcon />
                   </span>
@@ -140,30 +140,30 @@ export default function Hero() {
               </Link>
 
               {/* Hackathon Registration Button */}
-              <Link href="https://unstop.com/o/PI6XorN" passHref legacyBehavior>
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-center w-full md:w-auto"
-                >
+              <a
+                href="https://unstop.com/o/PI6XorN"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex justify-center w-full md:w-auto"
+              >
                 <HoverBorderGradient
                   containerClassName="rounded-full"
-                  as="button"
                   className="bg-background md:w-74 w-80 px-10 group flex items-center justify-center space-x-2"
                 >
                   <Image
                     src="/events/unstop.png"
-                    alt="Google Logo"
+                    alt="Unstop Logo"
                     width={25}
                     height={25}
                   />
-                  <span className="text-neon-green">Hacknight Registration</span>
+                  <span className="text-neon-green text-center md:text-base text-sm">
+                    Hacknight Registration
+                  </span>
                   <span className="group-hover:text-neon-green">
                     <ArrowRightIcon />
                   </span>
                 </HoverBorderGradient>
-                </a>
-              </Link>
+              </a>
             </div>
           </motion.div>
         </AnimatePresence>
