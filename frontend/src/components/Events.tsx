@@ -160,8 +160,8 @@ export default function Events() {
             key={card.id}
             className="relative flex flex-col transition-shadow duration-300 hover:shadow-[0_0_5px_2px_rgba(180,255,57,0.4)] rounded-xl h-full"
           >
-          <a href="/events">
             <div className="event_card border-white/10 border rounded-xl p-6 bg-background h-full">
+            <a href="/events">
               <div className="flex flex-col h-full">
                 <div className="relative w-full h-0 pb-[52.25%] mb-4">
                   <Image
@@ -196,8 +196,8 @@ export default function Events() {
                   </p>
                 </div>
               </div>
+              </a>
             </div>
-            </a>
           </div>
         ))}
       </div>
