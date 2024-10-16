@@ -116,16 +116,6 @@ export default function Events() {
     },
     {
       id: 10,
-      title: "RoboSumo",
-      caption: "Outmaneuver and overpower your opponent in this robot showdown!",
-      description: "Build a robot for weight, traction, and pushing power. Win in head-to-head matches.",
-      organizer: "Gurudeep - 9606408688",
-      date: "8th Nov",
-      time: "9:30am onwards",
-      imageSrc: "/events/Sumo.png"
-    },
-    {
-      id: 11,
       title: "RoboSoccer",
       caption: "Join the future of football with robots as the stars!",
       description: "Control your robot to score goals in this tech-meets-tactics football match.",
@@ -135,7 +125,7 @@ export default function Events() {
       imageSrc: "/events/RoboSoccer.png"
     },
     {
-      id: 12,
+      id: 11,
       title: "Line Follower",
       caption: "Can your bot stay on track and lead the pack?",
       description: "Test your bot's precision and speed. Navigate obstacles to reach victory!",
@@ -149,12 +139,12 @@ export default function Events() {
   const devHostEvents = cardData.filter(card => card.id <= 9);
   const srcEvents = cardData.filter(card => card.id > 9);
 
-  const EventSection = ({ title, events }: { title: string, events: CardData[] }) => (
+  const EventSection = ({ title, events, isSRC = false }: { title: string, events: CardData[], isSRC?: boolean }) => (
     <div>
       <h2 className="select-none text-center text-3xl md:text-4xl font-semibold md:pb-16 pb-10">
         {title}
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <div className={`grid ${isSRC ? 'md:grid-cols-2 max-w-3xl mx-auto' : 'md:grid-cols-3'} grid-cols-1 gap-10`}>
         {events.map((card) => (
           <div
             key={card.id}
@@ -207,7 +197,7 @@ export default function Events() {
       <div className="max-w-6xl mb-20 w-full">
         <EventSection title="DevHost Events" events={devHostEvents} />
         <div className="mt-20">
-          <EventSection title="SRC Events" events={srcEvents} />
+          <EventSection title="SRC Events" events={srcEvents} isSRC={true} />
         </div>
       </div>
     </div>
