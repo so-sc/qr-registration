@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Devhost 2024 Stats</title>
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+	<style type="text/css">
+		*{
+			font-family: 'Fira Code', monospace;
+			letter-spacing: 2px;
+			margin: 0;padding: 0;
+		}
+		body{
+			background-color: black;
+			color: #39FF14;
+			font-size: 18px;
+		}
+		#title{
+			font-size: 30px;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-bottom: 20px;
+			letter-spacing: 4px;
+		}
+		#dotload{
+			display: inline-block;
+			animation: loader 2s steps(5) infinite;
+			overflow: hidden;
+			letter-spacing: 3px;
+			font-weight: bold;
+			width: 1ch;
+		}
+		@keyframes loader{
+			0% {
+                width: 0ch;
+            }
+            20% {
+                width: 1ch;
+            }
+            40% {
+                width: 2ch;
+            }
+            60% {
+                width: 3ch;
+            }
+            80% {
+                width: 4ch;
+            }
+            100% {
+                width: 5ch;
+            }
+		}
+		.blink{
+			animation: blk 300ms linear alternate infinite;
+		}
+		@keyframes blk{
+			from{
+				opacity: 0;
+			}
+			to{
+				opacity: 1;
+			}
+		}
+		#api{
+			margin: 30px 0px;
+			font-weight: 500;
+		}
+		#eventDet{
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+			width: 100%;
+			margin-top: 20px;
+			}
+			.item{
+				margin: 20px 5px;
+			}
+			#type{
+				animation: tp 3.5s steps(25);
+				overflow: hidden;
+				white-space: nowrap;
+				letter-spacing: 0;
+				display: inline-block;
+			}
+			@keyframes tp{
+				from{
+					width: 0ch;
+				}
+				to{
+					width: 24ch;
+				}
+			}
+			#count{
+				border: 0.5px solid lime;
+				width: fit-content;
+                padding: 10px;
+			}
+            @media (max-width: 768px) {
+    body {
+        font-size: 16px;
+    }
+    #title {
+        font-size: 2rem;
+    }
+    #api,
+    #eventDet {
+        margin: 20px;
+    }
+    .item {
+        font-size: 16px;
+    }
+}
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    #title {
+        font-size: 1.5rem;
+    }
+    #api,
+    #eventDet {
+        margin: 10px;
+    }
+    #count {
+        width: auto;
+        padding: 5px;
+    }
+    .item {
+        font-size: 14px;
+    }
+}
+#tline{
+	width: 100%;
+}
+#ttype{
+	background-color: transparent;
+	border: none; outline: none;
+	width: 80%; color: #39FF14;
+	margin-left: 10px;
+}
+	</style>
+</head>
+<body>
+<header>
+	<div id="title">> <span id="type">Welcome to Devhost 2024</span><span class="blink">_</span></div>
+</header>
+<div id="api">
+		<div>API status: running<span id="dotload">.....</span></div>
+	</div>
+	<div id="eventDet">
+		<div id="tline">dhost@sosc><input type="text" id="ttype" autofocus spellcheck="false" autocomplete="false" onkeydown="test(event)"></div>
+	</div>
+	<script>
+		const test=(event)=>{
+			if(event.key!='Enter') return;
+			const val=event.target.value.split("@");
+			if(val.length!=2) return;
+			window.location.replace(`/stats?org=${val[1]}`)
+		}
+	</script>
+</body>
+</html>

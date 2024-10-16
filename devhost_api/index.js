@@ -136,7 +136,11 @@ app.get('/check-auth', (req, res) => {
 
 app.get('/stats', async(req, res) => {
     const data=await regStats();
+    const pass = req.query.org;
+    if(pass==process.env.statPass)
+        // console.log(pass,process.env.statPass)
    res.render('stats',{data});
+    else res.render('minStats');
 });
 
 app.get('/viewprofile', async (req, res) => {
