@@ -156,6 +156,7 @@ export default function Events() {
       </h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
         {events.map((card) => (
+          <a href="/events">
           <div
             key={card.id}
             className="relative flex flex-col transition-shadow duration-300 hover:shadow-[0_0_5px_2px_rgba(180,255,57,0.4)] rounded-xl h-full"
@@ -196,7 +197,7 @@ export default function Events() {
                 </div>
               </div>
             </div>
-          </div>
+          </div></a>
         ))}
       </div>
     </div>
