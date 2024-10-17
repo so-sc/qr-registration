@@ -15,9 +15,9 @@ const accordionData = [
   },
   {
     id: "item-2",
-    question: "Is there a registration fee for participating in the hackathon?",
+    question: "Do all team members need to register and pay individually?",
     answer:
-      "No, participation in this Hackathon is free of charge. We encourage everyone interested to join us in this exciting event.",
+      "All team members must create individual profiles on our platform. However, only one team member needs to register the team for the event and handle the payment.",
   },
   {
     id: "item-3",
@@ -53,21 +53,21 @@ const accordionData = [
 
 export default function FAQ() {
   return (
-    <div className="flex flex-col justify-center">
-      <Accordion className="" type="single" collapsible>
-        <h1 className="select-none text-center text-4xl md:text-5xl font-semibold md:pb-10 pb-5">
+    <div className="flex flex-col justify-center px-4 sm:px-6 md:px-8 py-12 md:py-16">
+      <Accordion className="w-full max-w-3xl mx-auto" type="single" collapsible>
+        <h1 className="select-none text-center text-3xl sm:text-4xl md:text-4xl font-semibold pb-6 md:pb-10">
           FAQ&apos;s
         </h1>
         {accordionData.map((item) => (
           <AccordionItem
             key={item.id}
             value={item.id}
-            className="max-w-3xl mx-auto"
+            className="border-b border-white/10"
           >
-            <AccordionTrigger className="text-left text-lg font-medium tracking-wide py-5">
+            <AccordionTrigger className="text-left text-base sm:text-lg font-medium tracking-wide py-4 sm:py-5 pr-8">
               {item.question}
             </AccordionTrigger>
-            <AccordionContent className="text-white/60">
+            <AccordionContent className="text-white/60 text-sm sm:text-base pb-4">
               {item.answer}
             </AccordionContent>
           </AccordionItem>
