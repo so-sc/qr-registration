@@ -136,7 +136,7 @@
 #ttype{
 	background-color: transparent;
 	border: none; outline: none;
-	width: 40%; color: #39FF14;
+	width: auto; color: #39FF14;
 	margin-left: 10px;
 }
 	</style>
@@ -155,7 +155,7 @@
 		const test=(event)=>{
 			if(event.key!='Enter') return;
 			const val=event.target.value.split("@");
-			if(val.length!=2) return;
+			if(val.length!=2||val[0].toLowerCase()!='connect') return;
 			window.location.replace(`/stats?org=${val[1]}`)
 		}
 	</script>
