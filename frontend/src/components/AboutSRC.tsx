@@ -43,6 +43,16 @@ export default function AboutSRC() {
                   <span className="text-neon-green text-sm md:text-base">SRC Rulebook</span>
                 </HoverBorderGradient>
               </a>
+              <a href="/brochure/SRC_Brochure.pdf" download>
+                <HoverBorderGradient
+                  containerClassName="rounded-full"
+                  as="div"
+                  className="bg-background w-full md:w-auto px-6 md:px-8 py-2 md:py-3 group flex items-center justify-center space-x-2 cursor-pointer" // Ensure this is a div or another element
+                >
+                  <Download size={20} className="text-neon-green" />
+                  <span className="text-neon-green text-sm md:text-base">SRC Brochure</span>
+                </HoverBorderGradient>
+              </a>
             </div>
           </div>
         </HoverBorderGradient>
