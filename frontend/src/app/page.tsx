@@ -14,6 +14,7 @@ import Speakers from "@/components/Speakers";
 import Sponsors from "@/components/Sponsors";
 import Image from "next/image";
 import HackathonRegistration from "@/components/HackathonRegistration";
+import FAQ from "@/components/Faq";
 
 export default function Home() {
   return (
@@ -60,6 +61,9 @@ export default function Home() {
             alt="background"
             className="object-right lg:w-[53rem] lg:h-[53rem] md:w-[40rem] md:h-[40rem] w-[30rem] h-[30rem] md:mt-96 sm:mt-[30rem] mt-[40rem] object-cover"
           ></Image>
+        </div>
+        <div>
+          <FAQ />
         </div>
         <div className="max-w-7xl relative px-5 mx-auto">
           <Gallery />
